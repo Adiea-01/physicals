@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.rails.physicals.sysuser.mapper.UserMapper">
+
+    <resultMap type="cn.rails.physicals.sysuser.entity.UserInfo" id="userInfoMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="user_name" jdbcType="VARCHAR"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="identityCard" column="identity_card" jdbcType="VARCHAR"/>
+        <result property="jobNumber" column="job_number" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="salt" column="salt" jdbcType="VARCHAR"/>
+        <result property="pwdStatus" column="pwd_status" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="DATE"/>
+        <result property="department" column="department" jdbcType="VARCHAR"/>
+        <result property="subDepartment" column="sub_department" jdbcType="VARCHAR"/>
+        <result property="userUuid" column="userUuid" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createId" column="create_id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="DATE"/>
+        <result property="updateId" column="update_id" jdbcType="INTEGER"/>
+        <result property="updateDate" column="update_date" jdbcType="DATE"/>
+        <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="allSql">
+		id,user_name,real_name,identity_card,job_number,phone,password,salt,pwd_status,gender,last_login_time,department,sub_department,userUuid,version,remark,create_id,create_date,update_id,update_date,del_flag
+	</sql>
+
+
+
+
+
+
+
+</mapper>
