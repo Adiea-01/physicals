@@ -27,27 +27,26 @@ public class UserController {
 
 
     @RequestMapping("/login")
-    public String loginHtml(){
+    public String loginHtml() {
         return "login";
     }
 
 
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
         return "/user/userManager";
     }
 
     @RequestMapping("/authIndex")
-    public String authIndex(){
+    public String authIndex() {
         return "/userAuthManager";
     }
 
     @RequestMapping("/doLogin")
     public RespVo login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
-        return userService.login(userName,password,request,response);
+        return userService.login(userName, password, request, response);
     }
-
 
 
 }

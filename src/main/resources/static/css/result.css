@@ -1,0 +1,73 @@
+.login{
+	position:relative;
+	width:100vw;
+	height:100vh;
+	background-image:url("../img/big_bg.png");
+	background-repeat:no-repeat;
+	background-position:center;
+	overflow:hidden;
+}
+.login .login-container{
+	position:absolute;
+	top:50%;
+	left:50%;
+	width:973px;
+	height:614px;
+	background-image:url("../img/result_panel.png");
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-position:center;
+	transform: translate(-50%,-50%);
+	padding-top:58px;
+	box-sizing:border-box;
+}
+.login .login-container .form-tip{
+	line-height:55px;
+	font-size:15px;
+	padding-left:40px;
+	display:flex;
+	flex-direction:row;
+	flex-wrap:nowrap;
+}
+.login .login-container .form-tip .col{
+	flex:auto;
+	flex-grow:1;
+}
+.login .login-container .form-tip .col span{
+	color:#ff6600;
+}
+.login .login-container .form-tip .col .iframe{
+	
+}
+.login .login-container .list{
+	list-style:none;
+	padding:0 30px;
+	height: 385px;
+	overflow-y: scroll;
+}
+.login .login-container .list li{
+	line-height:30px;
+	padding:20px 0px;
+	border-bottom:dashed 1px #CCCCCC;
+}
+.login .login-container .list li a img{
+	vertical-align: middle;
+	float:right;
+	margin-right:30px;
+}
+.login .login-container .list li span{
+	width:80%;
+	display:inline-block;
+	text-indent:15px;
+}
+.login .btn-container{
+	margin: 40px auto;
+	width: 360px;
+	text-align: center;
+}
+.empty-tip{
+	width:100%;
+	height: 385px;
+	line-height: 385px;
+	text-align: center;
+}

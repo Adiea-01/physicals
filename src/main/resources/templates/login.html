@@ -1,61 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" class="body-full-height" xmlns:th="http://www.thymeleaf.org" >
 <head>
-<!--    <head th:replace="/common/head :: head"></head>-->
+    <head th:replace="/common/head :: head"></head>
 </head>
+
 <body>
-
-<div class="login-container">
-
-    <div class="login-box animated fadeInDown">
-        <div class="login-logo">动态配置管理系统</div>
-        <div class="login-body">
-            <div class="login-title"><strong>欢迎使用Mars动态配置系统</strong>, 请登录</div>
-            <!--<form id="loginForm" class="form-horizontal" >-->
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input name="userName" type="text" class="form-control userName" placeholder="用户名"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input name="password" type="password" class="form-control password" placeholder="密码"/>
-                    </div>
-                </div>
-                <!--<div class="form-group">
-                    <div class="col-md-12">
-                        <input name="secret" type="text" class="form-control secret" placeholder="动态秘钥"/>
-                    </div>
-                </div>-->
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <!-- <a href="#" class="btn btn-link btn-block">Forgot your password?</a>-->
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-info btn-block" id="loginIn">登录</button>
-                    </div>
-                </div>
+<div class="login">
+    <div class="login-container">
+        <form enctype="multipart/form-data">
+            <div class="form-item">
+                <span class="label">账号：</span>
+                <input type="text" id="phone" name="phone" value="" reg="^[^,]{1,11}$" placeholder=" 请输入正确手机号" style="width:200px;height: 25px">
             </div>
-            <!--</form>-->
-        </div>
-        <div class="login-footer">
-            <!--<div class="pull-left">
-                &copy; 2015 AppName
+            <div class="form-item">
+                <span class="label">密码：</span>
+                <input type="password" id="password" name="password" maxlength="18" value="" reg='^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\\W_!@#$%^&*`~()-+=]+$)(?![0-9\\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\\W_!@#$%^&*`~()-+=]{6,18}$' placeholder=" 大小写字母、数字，6到18位" style="width:200px;height: 25px">
             </div>
-            <div class="pull-right">
-                <a href="#">About</a> |
-                <a href="#">Privacy</a> |
-                <a href="#">Contact Us</a>
-            </div>-->
-        </div>
+            <div class="form-item">
+<!--                <input type="button" id="toLogin" name="toLogin">-->
+                <button id="toLogin" name="toLogin">
+            </div>
+            <div class="tip">
+                <p>*温馨提示：</p>
+                <p>	1、查询密码初始值为身份证后6位；<img class="tipPwd"></p>
+                <p>	2、系统暂仅提供2014~2021年个人体检数据；</p>
+                <p>	3、如无法正常查询，请联系管理员，并提交个人身份详细信息；</p>
+                <p>	4、系统提供的体检数据，仅供参考；</p>
+                <p>	5、体检报告信息涉及个人隐私，仅限个人查阅！<img class="QRCode"></p>
+            </div>
+        </form>
     </div>
-
 </div>
-<script type="text/javascript" th:src="@{/js/plugins/metisMenu/metisMenu.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/plugins/momentjs/momentjs.js}"></script>
-<script type="text/javascript" th:src="@{/js/self/common.js}"></script>
-<script type="text/javascript" th:src="@{/js/self/lg.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/easy_validator.pack.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/jquery.bgiframe.min.js}"></script>-->
+<script type="text/javascript" th:src="@{/js/WdatePicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/self/login.js}"></script>
 </body>
 </html>
 

@@ -8,6 +8,7 @@ import cn.rails.physicals.sysuser.service.UserService;
 import cn.rails.physicals.util.PasswordUtils;
 import cn.rails.physicals.vo.RespVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
  * @Author: pan zhenghui
  * @Date: 2021/1/25 14:20
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 

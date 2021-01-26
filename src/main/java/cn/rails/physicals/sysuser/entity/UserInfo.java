@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * @Description:
+ * @Description: 用户实体
  * @Author: pan zhenghui
  * @Date: 2021/1/25 9:29
  */
@@ -51,7 +51,7 @@ public class UserInfo extends BaseEntity {
     private String salt;
 
     //如果第一次登录状态是0，则提示修改密码
-    @TableField(value = "pwdStatus")
+    @TableField(value = "pwd_status")
     private String pwdStatus;
 
     //性别
