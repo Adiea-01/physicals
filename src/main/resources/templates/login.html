@@ -17,8 +17,7 @@
                 <input type="password" id="password" name="password" maxlength="18" value="" reg='^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\\W_!@#$%^&*`~()-+=]+$)(?![0-9\\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\\W_!@#$%^&*`~()-+=]{6,18}$' placeholder=" 大小写字母、数字，6到18位" style="width:200px;height: 25px">
             </div>
             <div class="form-item">
-<!--                <input type="button" id="toLogin" name="toLogin">-->
-                <button id="toLogin" name="toLogin">
+                <button id="toLogin" name="toLogin"/>
             </div>
             <div class="tip">
                 <p>*温馨提示：</p>
@@ -31,10 +30,10 @@
         </form>
     </div>
 </div>
-<script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/easy_validator.pack.js}"></script>
-<!--<script type="text/javascript" th:src="@{/js/jquery.bgiframe.min.js}"></script>-->
-<script type="text/javascript" th:src="@{/js/WdatePicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery/jquery-1.12.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery/easy_validator.pack.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/plugins/jquery/jquery.bgiframe.min.js}"></script>-->
+<script type="text/javascript" th:src="@{/js/plugins/WdatePicker/WdatePicker.js}"></script>
 <script type="text/javascript" th:src="@{/js/self/login.js}"></script>
 </body>
 </html>

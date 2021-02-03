@@ -15,7 +15,7 @@ import java.util.Date;
  * @Author: pan zhenghui
  * @Date: 2021/1/25 9:29
  */
-@TableName("system_user_info")
+@TableName("user_info")
 @Data
 @Builder
 @NoArgsConstructor
