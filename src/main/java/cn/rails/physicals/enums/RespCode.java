@@ -16,6 +16,7 @@ public enum RespCode {
     USER_OR_PASSWORD_IS_ERROR(12, "用户名或者密码错误,请重新输入"),
     USER_NOT_EXIST(13, "用户不存在"),
     SIGNATURE_MISMATCH(14, "签名验证失败"),
+    FILE_NOT_EXIST(15, "文件不存在"),
 
     SAVE_ERROR(100, "保存失败,请稍后再试"),
     UPDATE_ERROR(101, "更新失败,请稍后再试"),

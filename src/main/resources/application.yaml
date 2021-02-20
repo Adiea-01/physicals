@@ -1,0 +1,37 @@
+spring:
+  # THYMELEAF (ThymeleafAutoConfiguration)
+  thymeleaf:
+    # 开启模板缓存（默认值： true ）
+    cache: false
+    # 开启 MVC Thymeleaf 视图解析（默认值： true ）
+    enabled: true
+    # 模板编码
+    encoding: UTF-8
+    # 要运⽤于模板之上的模板模式。另⻅ StandardTemplate-ModeHandlers( 默认值： HTML5)
+    mode: LEGACYHTML5
+    # 在构建 URL 时添加到视图名称前的前缀（默认值： classpath:/templates/ ）
+    prefix: classpath:/templates/
+    #Content-Type 的值（默认值： text/html ）
+    servlet:
+      content-type: text/html
+    # 在构建 URL 时添加到视图名称后的后缀（默认值： .html ）
+    suffix: .html
+
+#  pagehelper分页
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+  reasonable: true
+  support-methods-arguments: true
+
+#下面这些内容是为了让MyBatis映射
+mybatis-plus:
+  #指定Mybatis的Mapper文件
+  mapper-locations: classpath*:cn/rails/physicals/mapper/xml/*.xml
+  #指定Mybatis的实体目录
+  type-aliases-package: cn.rails.physicals.entity
+
+#文件存放位置
+#uploadFilePath: /usr/local/
+
+uploadFilePath: D:\
