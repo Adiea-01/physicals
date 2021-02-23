@@ -1,23 +1,10 @@
 
-
-
 //添加用户
-var userInfoAdd = function () {
-    var superAdmin=$("#superAdmin").val();
-
-    if (superAdmin==0 || superAdmin=="0"){
-        var roleId=$("#addRoleId").val();
-        if(roleId=='' || roleId==null){
-            alert("请选择角色");
-            return false;
-        }
-    }
-
-
-    var a = $("#userInfoAddForm").serializeJson();
+var checkupItemAdd = function () {
+    var a = $("#checkupItemAddForm").serializeJson();
     loading();
     $.ajax({
-        url: "./user/add",
+        url: "./checkupItem/addCheckupItem",
         type: "post",
         data: JSON.stringify(a),
         contentType: "application/json",
@@ -25,7 +12,7 @@ var userInfoAdd = function () {
         success: function (data) {
             loaded();
             if (data.code == "0") {
-                $("#userInfoAddModal").modal("hide");
+                $("#checkupItemAddModal").modal("hide");
                 $("input[type=reset]").trigger("click");
                 location.reload();
             } else {
@@ -40,22 +27,22 @@ var userInfoAdd = function () {
 }
 
 function showModal(id) {
-    $("#userInfoId").val(id);
-    $('#userInfoDelModal').modal('show');
+    $("#checkupItemId").val(id);
+    $('#checkupItemoDelModal').modal('show');
 }
 
-var userInfoDel = function () {
+var checkupItemDel = function () {
     loading();
     $.ajax({
         url: "./user/deleteById",
         type: "post",
-        data: {"id": $("#userInfoId").val()},
+        data: {"id": $("#checkupItemId").val()},
         dataType: "json",
         success: function (data) {
 
             loaded();
             if (data.code == "0") {
-                $('#userInfoDelModal').modal('hide');
+                $('#checkupItemDelModal').modal('hide');
                 loadData();
             } else {
                 alert(data.msg);
@@ -68,23 +55,11 @@ var userInfoDel = function () {
     });
 }
 
- function userInfoEdit() {
-
-     var superAdmin=$("#editSuperAdmin").val();
-
-     if (superAdmin==0 || superAdmin=="0"){
-         var roleId=$("#editRoleId").val();
-         if(roleId=='' || roleId==null){
-             alert("请选择角色");
-             return false;
-         }
-     }
-
-
-     var a = $("#userInfoEditForm").serializeJson();
+ function checkupItemEdit() {
+     var a = $("#checkupItemEditForm").serializeJson();
     loading();
     $.ajax({
-        url: "./user/update",
+        url: "./checkupItem/updateCheckupItem",
         type: "post",
         data: JSON.stringify(a),
         contentType: "application/json",
@@ -92,7 +67,7 @@ var userInfoDel = function () {
         success: function (data) {
             loaded();
             if (data.code == "0") {
-                $("#userInfoEditModal").modal("hide");
+                $("#checkupItemEditModal").modal("hide");
                 loadData();
                 //location.reload();
             } else {
@@ -123,10 +98,10 @@ $("#superAdmin").on("change",function () {
     }
 })
 
- function queryByUserId(id) {
+ function queryCheckupItemById(id) {
     loading();
     $.ajax({
-        url: "./user/queryById",
+        url: "./checkupItem/queryCheckupItemById",
         type: "post",
         data: {"id": id},
         dataType: "json",
@@ -138,13 +113,15 @@ $("#superAdmin").on("change",function () {
                 return false;
             }
 
-            $("#userInfoEditModal").modal("show");
+            $("#checkupItemEditModal").modal("show");
             $("#editId").val(data.id);
-            $("#editUserName").val(data.userName);
-            $("#editRealName").val(data.realName);
-            $("#editPassword").val(data.password);
-            $("#editStatus").val(data.status);
-            $("#editSuperAdmin").val(data.superAdmin);
+            $("#editChineseName").val(data.chineseName);
+            $("#editAbbreviation").val(data.abbreviation);
+            $("#editClassification").val(data.classification);
+            $("#editMiximum").val(data.miximum);
+            $("#editMaximum").val(data.maximum);
+            $("#editUnit").val(data.unit);
+            $("#editReferenceDescription").val(data.referenceDescription);
             manager.loadRole("editRoleId");
             $("#editRoleId").val(data.roleId);
             if (data.superAdmin==1){
@@ -152,7 +129,7 @@ $("#superAdmin").on("change",function () {
             }else{
                 $("#editRoleIdDiv").show();
             }
-            $("#userInfoEditModal").modal("show");
+            $("#checkupItemEditModal").modal("show");
         },error: function (e) {
             loaded();
             alert("网络错误，请重试！！");
@@ -166,13 +143,13 @@ $(document).ready(function () {
 });
 function add() {
     manager.loadRole("addRoleId");
-    $("#userInfoAddModal").modal("show");
+    $("#checkupItemAddModal").modal("show");
 }
 
 function loadData() {
 
-    $('#dataTables-userInfo').dataTable().fnDestroy();
-    var table = $('#dataTables-userInfo').on('xhr.dt', function (e, settings, json, xhr) {
+    $('#dataTables-checkupItem').dataTable().fnDestroy();
+    var table = $('#dataTables-checkupItem').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.code == 0) {
                 json.recordsTotal = json.data.itotalDisplayRecords;
                 json.recordsFiltered = json.data.itotalDisplayRecords;
@@ -276,7 +253,7 @@ function loadData() {
 
                 {
                     targets: 8, render: function (data, type, full, meta) {
-                        return '<a class="btn btn-success btn-" onclick="queryByUserId(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
+                        return '<a class="btn btn-success btn-" onclick="queryCheckupItemById(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
                             '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
                     }
                 }

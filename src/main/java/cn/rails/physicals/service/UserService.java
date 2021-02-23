@@ -13,5 +13,14 @@ public interface UserService {
 
     PageDataVo<UserInfo> queryAll(Integer start,Integer length);
 
+    int addUserInfo(UserInfo userInfo);
+
+    UserInfo queryUserInfoById(Long id);
+
+    int updateUserInfo(UserInfo userInfo);
+
+    int deleteUserInfoById(Long id);
+
+    PageDataVo<UserInfo> searchUserInfoList(Integer start,Integer length,UserInfo userInfo);
 
 }

@@ -44,15 +44,6 @@
                                    <!-- <button class="btn btn-success dropdown-toggle btn-condensed" data-target='#userInfoAddModal' data-toggle='modal'><i
                                             class="fa fa-plus"></i></button>-->
                                 </div>
-
-<!--                                <div class="panel-heading" style="float: right;">-->
-<!--                                    <div class="btn-group">-->
-<!--                                        <button type="button" class="btn btn-success dropdown-toggle"-->
-<!--                                                onclick="add()">-->
-<!--                                            <i class="glyphicon glyphicon-plus"></i>新增-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
                         </div>
                         <div class="panel-heading" style="float: right;">
@@ -63,23 +54,23 @@
                                 </button>
                             </div>
 
-                            <div class="pull-right" style="">
-                                <label>年度查询:</label>
-                                <div class="btn-group" style="width:200px;">
-                                    <input name="description" class="form-control" id="description" placeholder="模糊搜索描述"/>
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success dropdown-toggle"
-                                            onclick="loadDataLike()">
-                                        <span class="glyphicon glyphicon-search"></span>模糊查询
-                                    </button>
-                                </div>
-                            </div>
+<!--                            <div class="pull-right" style="">-->
+<!--                                <label>年度查询:</label>-->
+<!--                                <div class="btn-group" style="width:200px;">-->
+<!--                                    <input name="description" class="form-control" id="description" placeholder="模糊搜索描述"/>-->
+<!--                                </div>-->
+<!--                                <div class="btn-group">-->
+<!--                                    <button type="button" class="btn btn-success dropdown-toggle"-->
+<!--                                            onclick="loadDataLike()">-->
+<!--                                        <span class="glyphicon glyphicon-search"></span>模糊查询-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
 
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table id="dataTables-userInfo" class="table table-bordered">
+                                <table id="dataTables-year" class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th width="5%">ID</th>
@@ -105,114 +96,71 @@
 </div>
 <!-- END PAGE CONTAINER -->
 
-<div class="modal fade" id="userInfoDelModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoDelModalLabel"
+<div class="modal fade" id="yearDelModal" tabindex="-1" role="dialog"
+     aria-labelledby="yearDelModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoDelModalLabel">删除认证</h4>
+                <h4 class="modal-title" id="yearDelModalLabel">删除认证</h4>
             </div>
             <div class="modal-body">
-                <input id="userInfoId" type="hidden">
+                <input id="yearId" type="hidden">
                 确定要删除这个用户信息么？
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoDel()"><i class="glyphicon glyphicon-trash"></i>删除</button>
+                <button type="button" class="btn btn-primary" onclick="yearDel()"><i class="glyphicon glyphicon-trash"></i>删除</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="userInfoEditModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoEditModalLabel"
+<div class="modal fade" id="yearEditModal" tabindex="-1" role="dialog"
+     aria-labelledby="yearEditModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoEditModalLabel">用户修改</h4>
+                <h4 class="modal-title" id="yearEditModalLabel">年份修改</h4>
             </div>
             <div class="modal-body">
-                <form id="userInfoEditForm">
+                <form id="yearEditForm">
                     <input type="hidden" id="editId" name="id" />
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="editUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="editPassword" aria-required="true"/>
-                    真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
-                                id="editRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="editSuperAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
-                    </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="editStatus" aria-required="true">
-                        <option value="">请选择启用状态</option>
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="editRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="editRoleId" aria-required="true">
-
-                        </select>
-                    </div>
-
+                    年份：<input name="year" class="form-control" placeholder="请输入年份" type="text"
+                                id="editYear" aria-required="true"/>
                     <input type="reset" name="editReset" style="display: none;"/>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoEdit()"><i class="glyphicon glyphicon-edit"></i>修改</button>
+                <button type="button" class="btn btn-primary" onclick="yearEdit()"><i class="glyphicon glyphicon-edit"></i>修改</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="userInfoAddModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoAddModalLabel"
+<div class="modal fade" id="yearAddModal" tabindex="-1" role="dialog"
+     aria-labelledby="yearAddModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoAddModalLabel">用户新增</h4>
+                <h4 class="modal-title" id="yearAddModalLabel">年份新增</h4>
             </div>
             <div class="modal-body">
-                <form id="userInfoAddForm">
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="addUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="addPassword" aria-required="true"/>
-                    真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
-                                id="addRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="superAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
-                    </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="addStatus" aria-required="true">
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="addRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="addRoleId" aria-required="true">
-
-                        </select>
-                    </div>
-
+                <form id="yearAddForm">
+                    年份：<input name="year" class="form-control" placeholder="请输入年份" type="text"
+                                id="addYear" aria-required="true"/>
                     <input type="reset" name="addReset" style="display: none;"/>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoAdd()"><i class="glyphicon glyphicon-plus"></i>新建</button>
+                <button type="button" class="btn btn-primary" onclick="yearAdd()"><i class="glyphicon glyphicon-plus"></i>新建</button>
             </div>
         </div>
     </div>

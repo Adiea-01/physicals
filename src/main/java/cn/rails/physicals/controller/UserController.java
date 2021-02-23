@@ -1,14 +1,14 @@
 package cn.rails.physicals.controller;
 
+import cn.rails.physicals.entity.UserInfo;
+import cn.rails.physicals.enums.RespCode;
+import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.service.UserService;
 import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +43,7 @@ public class UserController {
 
     /**
      * 用户列表
+     *
      * @return
      */
     @RequestMapping("/index")
@@ -52,6 +53,7 @@ public class UserController {
 
     /**
      * 体检用户列表
+     *
      * @param start
      * @param length
      * @return
@@ -64,9 +66,69 @@ public class UserController {
     }
 
 
-    @RequestMapping("/authIndex")
-    public String authIndex() {
-        return "userAuthManager";
+    /**
+     * 添加用户
+     *
+     * @param userInfo
+     * @return
+     */
+    @PostMapping(value = "/addUserInfo")
+    @ResponseBody
+    public RespVo addUserInfo(@RequestBody UserInfo userInfo) {
+        int count = userService.addUserInfo(userInfo);
+        if (count != 1) {
+            throw new MarsException(RespCode.SAVE_ERROR);
+        }
+        return RespVo.success();
+    }
+
+    /**
+     * @return
+     */
+    @PostMapping(value = "/queryUserInfoById")
+    @ResponseBody
+    public RespVo queryUserInfoById(@RequestParam("id") Long id) {
+        return RespVo.success(userService.queryUserInfoById(id));
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param userInfo
+     * @return
+     */
+    @PostMapping(value = "/updateUserInfo")
+    @ResponseBody
+    public RespVo updateUserInfo(@RequestBody UserInfo userInfo) {
+        userService.updateUserInfo(userInfo);
+        return RespVo.success();
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/deleteUserInfoById")
+    @ResponseBody
+    public RespVo deleteUserInfoById(@RequestParam("id") Long id) {
+        return RespVo.success(userService.deleteUserInfoById(id));
+    }
+
+
+    /**
+     * 模糊搜索
+     * @param start
+     * @param length
+     * @param userInfo
+     * @return
+     */
+    @PostMapping(value = "/searchUserInfoByRealName")
+    @ResponseBody
+    public RespVo searchUserInfoByRealName(@RequestParam(defaultValue = "0") Integer start,
+                                           @RequestParam(defaultValue = "20") Integer length, @RequestBody UserInfo userInfo) {
+        return RespVo.success(userService.searchUserInfoList(start, length, userInfo));
     }
 
 }

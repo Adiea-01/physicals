@@ -3,6 +3,7 @@ package cn.rails.physicals.controller;
 import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.service.PhysicalDataImportService;
+import cn.rails.physicals.service.PhysicalReportService;
 import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ReportController {
     @Autowired
     private PhysicalDataImportService physicalDataImportService;
 
+    @Autowired
+    private PhysicalReportService physicalReportService;
+
     @RequestMapping("/excelIndex")
     public String excelIndex() {
         return "report/excelIndex";
@@ -33,7 +37,7 @@ public class ReportController {
 
     @RequestMapping("/reportIndex")
     public String reportIndex() {
-        return "report/reportIndex";
+        return "report/userViewReportRecord";
     }
 
 
@@ -49,10 +53,14 @@ public class ReportController {
         }
         physicalDataImportService.importPhysicalData(multipartFile);
         return RespVo.success();
-
-
     }
 
+    @PostMapping(value = "/queryViewReportAll")
+    @ResponseBody
+    public RespVo queryViewReportAll(@RequestParam(defaultValue = "0") Integer start,
+                                      @RequestParam(defaultValue = "20") Integer length) {
+        return RespVo.success(physicalReportService.queryViewReportAll(start, length));
+    }
 
 
 

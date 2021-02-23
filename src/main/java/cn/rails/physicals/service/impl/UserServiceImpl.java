@@ -12,7 +12,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 登录验证
+     *
      * @param username
      * @param password
      * @param request
@@ -59,8 +62,68 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageDataVo<UserInfo> queryAll(Integer start, Integer length) {
-        Page page = PageHelper.startPage((start/length)+1, length);
-        List<UserInfo> userInfoList=userMapper.queryAll();
+        Page page = PageHelper.startPage((start / length) + 1, length);
+        List<UserInfo> userInfoList = userMapper.queryAll();
+        PageDataVo<UserInfo> pageData = new PageDataVo<>();
+        pageData.setData(userInfoList);
+        pageData.setITotal(page.getTotal());
+        pageData.setITotalDisplayRecords(page.getTotal());
+        pageData.setFnRecordsTotal(page.getTotal());
+        return pageData;
+    }
+
+
+    @Transactional
+    @Override
+    public int addUserInfo(UserInfo userInfo) {
+        String identityCard = userInfo.getIdentityCard();
+        String realName = userInfo.getRealName();
+        String jobNumber = userInfo.getJobNumber();
+        String phone = userInfo.getPhone();
+        int result = 0;
+        if (StringUtils.isNotBlank(identityCard) &&
+                StringUtils.isNotBlank(realName) &&
+                StringUtils.isNotBlank(jobNumber) &&
+                StringUtils.isNotBlank(phone)) {
+            int count = userMapper.selectCount(new QueryWrapper<UserInfo>().eq("identity_card", identityCard));
+            if (count > 0) {
+                throw new MarsException("用户名已存在，请重新输入");
+            }
+            result = userMapper.insert(userInfo);
+        }
+        return result;
+    }
+
+
+    @Override
+    public UserInfo queryUserInfoById(Long id) {
+        return userMapper.selectById(id);
+    }
+
+    @Transactional
+    @Override
+    public int updateUserInfo(UserInfo userInfo) {
+        int count = userMapper.updateById(userInfo);
+        if (count < 0) {
+            throw new MarsException(RespCode.UPDATE_ERROR);
+        }
+        return count;
+    }
+
+    @Transactional
+    @Override
+    public int deleteUserInfoById(Long id) {
+        int count=userMapper.deleteById(id);
+        if (count < 0) {
+            throw new MarsException(RespCode.DELETE_ERROR);
+        }
+        return count;
+    }
+
+    @Override
+    public PageDataVo<UserInfo> searchUserInfoList(Integer start, Integer length, UserInfo userInfo) {
+        Page page = PageHelper.startPage((start / length) + 1, length);
+        List<UserInfo> userInfoList = userMapper.searchUserInfoList(userInfo);
         PageDataVo<UserInfo> pageData = new PageDataVo<>();
         pageData.setData(userInfoList);
         pageData.setITotal(page.getTotal());

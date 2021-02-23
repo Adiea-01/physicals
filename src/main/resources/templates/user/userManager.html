@@ -44,15 +44,6 @@
                                    <!-- <button class="btn btn-success dropdown-toggle btn-condensed" data-target='#userInfoAddModal' data-toggle='modal'><i
                                             class="fa fa-plus"></i></button>-->
                                 </div>
-
-<!--                                <div class="panel-heading" style="float: right;">-->
-<!--                                    <div class="btn-group">-->
-<!--                                        <button type="button" class="btn btn-success dropdown-toggle"-->
-<!--                                                onclick="add()">-->
-<!--                                            <i class="glyphicon glyphicon-plus"></i>新增-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
                         </div>
                         <div class="panel-heading" style="float: right;">
@@ -64,14 +55,14 @@
                             </div>
 
                             <div class="pull-right" style="">
-                                <label>姓名查询:</label>
+                                <label>姓名:</label>
                                 <div class="btn-group" style="width:200px;">
-                                    <input name="description" class="form-control" id="description" placeholder="模糊搜索描述"/>
+                                    <input name="realName" class="form-control" id="searchRealName" placeholder="模糊搜索描述"/>
                                 </div>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success dropdown-toggle"
                                             onclick="loadDataLike()">
-                                        <span class="glyphicon glyphicon-search"></span>模糊查询
+                                        <span class="glyphicon glyphicon-search"></span>查询
                                     </button>
                                 </div>
                             </div>
@@ -90,7 +81,7 @@
                                         <th width="5%">性别</th>
                                         <th width="10%">部门</th>
                                         <th width="10%">最后登录时间</th>
-<!--                                        <th width="5%">启用状态</th>-->
+                                        <th width="5%">启用状态</th>
 <!--                                        <th width="10%">角色</th>-->
                                         <th width="15%">操作</th>
                                     </tr>
@@ -144,30 +135,21 @@
             <div class="modal-body">
                 <form id="userInfoEditForm">
                     <input type="hidden" id="editId" name="id" />
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="editUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="editPassword" aria-required="true"/>
                     真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
                                 id="editRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="editSuperAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
+                    身份证号：<input name="identityCard" class="form-control" placeholder="请输入身份证号" type="text"
+                                id="editIdentityCard" aria-required="true"/>
+                    工号：<input name="jobNumber" class="form-control" placeholder="请输入工号" type="text"
+                              id="editJobNumber" aria-required="true"/>
+                    手机号：<input name="phone" class="form-control" placeholder="请输入手机号" type="text"
+                               id="editPhone" aria-required="true"/>
+                    性别:
+                    <select name="gender" class="form-control" id="editGender" aria-required="true">
+                        <option value="0">女</option>
+                        <option value="1">男</option>
                     </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="editStatus" aria-required="true">
-                        <option value="">请选择启用状态</option>
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="editRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="editRoleId" aria-required="true">
-
-                        </select>
-                    </div>
-
+                    部门：<input name="department" class="form-control" placeholder="请输入部门" type="text"
+                              id="editDepartment" aria-required="true"/>
                     <input type="reset" name="editReset" style="display: none;"/>
                 </form>
             </div>
@@ -190,28 +172,37 @@
             </div>
             <div class="modal-body">
                 <form id="userInfoAddForm">
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="addUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="addPassword" aria-required="true"/>
                     真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
                                 id="addRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="superAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
+                    身份证号：<input name="identityCard" class="form-control" placeholder="请输入身份证号" type="text"
+                                id="addIdentityCard" aria-required="true"/>
+                    工号：<input name="jobNumber" class="form-control" placeholder="请输入工号" type="text"
+                                id="addJobNumber" aria-required="true"/>
+                    手机号：<input name="phone" class="form-control" placeholder="请输入手机号" type="text"
+                              id="addPhone" aria-required="true"/>
+                    性别:
+                    <select name="gender" class="form-control" id="addGender" aria-required="true">
+                        <option value="0">女</option>
+                        <option value="1">男</option>
                     </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="addStatus" aria-required="true">
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="addRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="addRoleId" aria-required="true">
+                    部门：<input name="department" class="form-control" placeholder="请输入部门" type="text"
+                              id="addDepartment" aria-required="true"/>
+<!--                    管理员类型:-->
+<!--                    <select name="superAdmin" class="form-control" id="superAdmin" aria-required="true">-->
+<!--                        <option value="0">普通管理员</option>-->
+<!--                        <option value="1">超级管理员</option>-->
+<!--                    </select>-->
+<!--                    启用状态:-->
+<!--                    <select name="status" class="form-control" id="addStatus" aria-required="true">-->
+<!--                        <option value="1">启用</option>-->
+<!--                        <option value="0">停用</option>-->
+<!--                    </select>-->
+<!--                    <div id="addRoleIdDiv">-->
+<!--                        角色:-->
+<!--                        <select name="roleId" class="form-control" id="addRoleId" aria-required="true">-->
 
-                        </select>
-                    </div>
+<!--                        </select>-->
+<!--                    </div>-->
 
                     <input type="reset" name="addReset" style="display: none;"/>
                 </form>

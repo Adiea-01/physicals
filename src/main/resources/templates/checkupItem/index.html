@@ -20,14 +20,6 @@
 
         <div th:replace="/common/top :: top"/>
 
-        <!-- START BREADCRUMB -->
-        <!--<ul class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">基础信息管理</a></li>
-            <li class="active">用户信息管理</li>
-        </ul>-->
-        <!-- END BREADCRUMB -->
-
         <!-- PAGE CONTENT WRAPPER -->
         <div class="page-content-wrap">
 
@@ -38,21 +30,13 @@
                     <!-- START DATATABLE EXPORT -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">用户列表</h3>
+                            <h3 class="panel-title">体检项目列表</h3>
                             <div class="pull-right">
                                 <div class="btn-group">
                                    <!-- <button class="btn btn-success dropdown-toggle btn-condensed" data-target='#userInfoAddModal' data-toggle='modal'><i
                                             class="fa fa-plus"></i></button>-->
                                 </div>
 
-<!--                                <div class="panel-heading" style="float: right;">-->
-<!--                                    <div class="btn-group">-->
-<!--                                        <button type="button" class="btn btn-success dropdown-toggle"-->
-<!--                                                onclick="add()">-->
-<!--                                            <i class="glyphicon glyphicon-plus"></i>新增-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
                         </div>
                         <div class="panel-heading" style="float: right;">
@@ -64,14 +48,14 @@
                             </div>
 
                             <div class="pull-right" style="">
-                                <label>姓名查询:</label>
+                                <label>项目名称:</label>
                                 <div class="btn-group" style="width:200px;">
                                     <input name="description" class="form-control" id="description" placeholder="模糊搜索描述"/>
                                 </div>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success dropdown-toggle"
                                             onclick="loadDataLike()">
-                                        <span class="glyphicon glyphicon-search"></span>模糊查询
+                                        <span class="glyphicon glyphicon-search"></span>查询
                                     </button>
                                 </div>
                             </div>
@@ -79,17 +63,17 @@
 
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table id="dataTables-userInfo" class="table table-bordered">
+                                <table id="dataTables-checkupItem" class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th width="5%">ID</th>
-                                        <th width="10%">中文名</th>
+                                        <th width="10%">项目名称</th>
 <!--                                        <th width="10%">字段名</th>-->
                                         <th width="5%">缩写</th>
 <!--                                        <th width="10%">中文说明</th>-->
                                         <th width="10%">检查类型</th>
-                                        <th width="8%">参考最小值</th>
-                                        <th width="8%">参考最大值</th>
+                                        <th width="8%">最小参考值</th>
+                                        <th width="8%">最大参考值</th>
                                         <th width="8%">单位</th>
                                         <th width="10%">描述</th>
                                         <th width="15%">操作</th>
@@ -111,114 +95,100 @@
 </div>
 <!-- END PAGE CONTAINER -->
 
-<div class="modal fade" id="userInfoDelModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoDelModalLabel"
+<div class="modal fade" id="checkupItemDelModal" tabindex="-1" role="dialog"
+     aria-labelledby="checkupItemDelModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoDelModalLabel">删除认证</h4>
+                <h4 class="modal-title" id="checkupItemDelModalLabel">删除认证</h4>
             </div>
             <div class="modal-body">
-                <input id="userInfoId" type="hidden">
+                <input id="checkupItemId" type="hidden">
                 确定要删除这个用户信息么？
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoDel()"><i class="glyphicon glyphicon-trash"></i>删除</button>
+                <button type="button" class="btn btn-primary" onclick="checkupItemDel()"><i class="glyphicon glyphicon-trash"></i>删除</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="userInfoEditModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoEditModalLabel"
+<div class="modal fade" id="checkupItemEditModal" tabindex="-1" role="dialog"
+     aria-labelledby="checkupItemEditModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoEditModalLabel">用户修改</h4>
+                <h4 class="modal-title" id="checkupItemEditModalLabel">体检项目修改</h4>
             </div>
             <div class="modal-body">
-                <form id="userInfoEditForm">
+                <form id="checkupItemEditForm">
                     <input type="hidden" id="editId" name="id" />
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="editUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="editPassword" aria-required="true"/>
-                    真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
-                                id="editRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="editSuperAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
-                    </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="editStatus" aria-required="true">
-                        <option value="">请选择启用状态</option>
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="editRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="editRoleId" aria-required="true">
-
-                        </select>
-                    </div>
-
+                    项目名称：<input name="chineseName" class="form-control" placeholder="请输入项目名称" type="text"
+                                id="editChineseName" aria-required="true"/>
+                    缩写：<input name="abbreviation" class="form-control" placeholder="请输入缩写" type="text"
+                              id="editAbbreviation" aria-required="true"/>
+                    检查类型：<input name="classification" class="form-control" placeholder="请输入检查类型" type="text"
+                                id="editClassification" aria-required="true"/>
+                    最小参考值：<input name="miximum" class="form-control" placeholder="请输入最小参考值" type="text"
+                                 id="editMiximum" aria-required="true"/>
+                    最大参考值：<input name="maximum" class="form-control" placeholder="请输入最大参考值" type="text"
+                                 id="editMaximum" aria-required="true"/>
+                    单位：<input name="unit" class="form-control" placeholder="请输入单位" type="text"
+                              id="editUnit" aria-required="true"/>
+                    描述：<input name="referenceDescription" class="form-control" placeholder="请输入描述" type="text"
+                              id="editReferenceDescription" aria-required="true"/>
                     <input type="reset" name="editReset" style="display: none;"/>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoEdit()"><i class="glyphicon glyphicon-edit"></i>修改</button>
+                <button type="button" class="btn btn-primary" onclick="checkupItemEdit()"><i class="glyphicon glyphicon-edit"></i>修改</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="userInfoAddModal" tabindex="-1" role="dialog"
-     aria-labelledby="userInfoAddModalLabel"
+<div class="modal fade" id="checkupItemAddModal" tabindex="-1" role="dialog"
+     aria-labelledby="checkupItemAddModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="userInfoAddModalLabel">用户新增</h4>
+                <h4 class="modal-title" id="checkupItemAddModalLabel">体检项目新增</h4>
             </div>
             <div class="modal-body">
-                <form id="userInfoAddForm">
-                    用户名称：<input name="userName" class="form-control" placeholder="请输入用户名称" type="text"
-                                id="addUserName" aria-required="true"/>
-                    用户密码：<input name="password" class="form-control" placeholder="请输入用户密码" type="password"
-                                id="addPassword" aria-required="true"/>
-                    真实姓名：<input name="realName" class="form-control" placeholder="请输入真实姓名" type="text"
-                                id="addRealName" aria-required="true"/>
-                    管理员类型:
-                    <select name="superAdmin" class="form-control" id="superAdmin" aria-required="true">
-                        <option value="0">普通管理员</option>
-                        <option value="1">超级管理员</option>
-                    </select>
-                    启用状态:
-                    <select name="status" class="form-control" id="addStatus" aria-required="true">
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div id="addRoleIdDiv">
-                        角色:
-                        <select name="roleId" class="form-control" id="addRoleId" aria-required="true">
-
-                        </select>
-                    </div>
-
+                <form id="checkupItemAddForm">
+                    项目名称：<input name="chineseName" class="form-control" placeholder="请输入项目名称" type="text"
+                                id="addChineseName" aria-required="true"/>
+                    缩写：<input name="abbreviation" class="form-control" placeholder="请输入缩写" type="text"
+                                id="addAbbreviation" aria-required="true"/>
+                    检查类型：<input name="classification" class="form-control" placeholder="请输入检查类型" type="text"
+                                id="addClassification" aria-required="true"/>
+                    最小参考值：<input name="miximum" class="form-control" placeholder="请输入最小参考值" type="text"
+                                id="addMiximum" aria-required="true"/>
+                    最大参考值：<input name="maximum" class="form-control" placeholder="请输入最大参考值" type="text"
+                                id="addMaximum" aria-required="true"/>
+                    单位：<input name="unit" class="form-control" placeholder="请输入单位" type="text"
+                                 id="addUnit" aria-required="true"/>
+                    描述：<input name="referenceDescription" class="form-control" placeholder="请输入描述" type="text"
+                              id="addReferenceDescription" aria-required="true"/>
+<!--                    启用状态:-->
+<!--                    <select name="status" class="form-control" id="addStatus" aria-required="true">-->
+<!--                        <option value="1">启用</option>-->
+<!--                        <option value="0">停用</option>-->
+<!--                    </select>-->
                     <input type="reset" name="addReset" style="display: none;"/>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ban-circle"></i>取消</button>
-                <button type="button" class="btn btn-primary" onclick="userInfoAdd()"><i class="glyphicon glyphicon-plus"></i>新建</button>
+                <button type="button" class="btn btn-primary" onclick="checkupItemAdd()"><i class="glyphicon glyphicon-plus"></i>新建</button>
             </div>
         </div>
     </div>

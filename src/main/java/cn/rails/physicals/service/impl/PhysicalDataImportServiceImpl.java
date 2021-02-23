@@ -1,14 +1,8 @@
 package cn.rails.physicals.service.impl;
 
-import cn.rails.physicals.entity.AnnualManagement;
-import cn.rails.physicals.entity.CheckupItem;
-import cn.rails.physicals.entity.PhysicalReport;
-import cn.rails.physicals.entity.PhysicalReportItem;
+import cn.rails.physicals.entity.*;
 import cn.rails.physicals.exception.MarsException;
-import cn.rails.physicals.mapper.AnnualManagementMapper;
-import cn.rails.physicals.mapper.CheckupItemMapper;
-import cn.rails.physicals.mapper.PhysicalReportItemMapper;
-import cn.rails.physicals.mapper.PhysicalReportMapper;
+import cn.rails.physicals.mapper.*;
 import cn.rails.physicals.service.PhysicalDataImportService;
 import cn.rails.physicals.util.RandomUtils;
 import jxl.Cell;
@@ -16,6 +10,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @Description:
+ * @Description: 体检数据导入
  * @Author: pan zhenghui
  * @Date: 2021/2/20 11:13
  */
@@ -42,6 +37,9 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
     @Value("${uploadFilePath}")
     private String uploadFilePath;
 
+    @Resource
+    private UserMapper userMapper;
+
     //体检报告管理
     @Resource
     private PhysicalReportMapper physicalReportMapper;
@@ -49,6 +47,10 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
     //体检报告数据
     @Resource
     private PhysicalReportItemMapper physicalReportItemMapper;
+
+    //体检报告查看记录表
+    @Resource
+    private PhysicalViewReportRecordMapper physicalViewReportRecordMapper;
 
     //年份管理
     @Resource
@@ -93,44 +95,71 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
             Sheet sheet = workbook.getSheet(0);
             //读取excel表中的数据写入到数据库
 
-
             int rowsCount = sheet.getRows();//总行数
             int columnsCount = sheet.getColumns();//总列数
 
-            AnnualManagement annualManagement=annualManagementMapper.queryDefaultYear(1);
-
-            Cell[] titleCells=sheet.getRow(0);
-            PhysicalReport physicalReport = new PhysicalReport();
-            PhysicalReportItem physicalReportItem = new PhysicalReportItem();
-
+            AnnualManagement annualManagement = annualManagementMapper.queryDefaultYear(1);
+            //先获取title行
+            Cell[] titleCells = sheet.getRow(0);
+            //遍历除title外的其他数据
             for (int y = 1; y < rowsCount; y++) {
-                Cell[] cells=sheet.getRow(y);
+                Cell[] cells = sheet.getRow(y);
 
-                for(int i=0;i<titleCells.length;i++){
-                    String inspectionItem=titleCells[i].getContents();
-                    String measuringData=cells[i].getContents();
+                //固定excel前面9列的参数title，保存到用户表和体检管理表中
+                String deptT = titleCells[0].getContents();
+                String dept = cells[0].getContents();//部门
+                String subDept = cells[1].getContents();//二级部门
+                String userName = cells[2].getContents();//真实姓名
+                String identityCard = cells[3].getContents();//身份证号
+                String customerId = cells[4].getContents();//客户编号
+                String physicalNumber = cells[5].getContents();//体检编号
+                String phone = cells[6].getContents();//手机号
+                String gender = cells[7].getContents();//性别
+                String physicalDate = cells[8].getContents();//体检日期
 
-                    System.out.println(titleCells[i].getContents());
-                    System.out.println(cells[i].getContents());
-
-                    if("身份证号".equals(inspectionItem)){
-                        physicalReport.setIdentityCard(measuringData);
-                    }else if("体检编号".equals(inspectionItem)){
-                        physicalReport.setPhysicalNumber(measuringData);
-                    }else if("客户编号".equals(inspectionItem)){
-                        physicalReport.setCustomerId(measuringData);
-                    }else if("体检日期".equals(inspectionItem)){
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        try {
-                            physicalReport.setPhysicalDate(simpleDateFormat.parse(measuringData));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }else if("版本".equals(inspectionItem)){
-                        physicalReport.setVersion(measuringData);
+                if ("男".equals(gender)) {
+                    gender = "1";
+                } else {
+                    gender = "0";
+                }
+                //通过身份证号查询，用户表中是否有该用户，如果没有该用户，则添加该用户到数据表中
+                if (StringUtils.isNotBlank(identityCard)) {
+                    UserInfo userInfo = userMapper.queryByIdentityCard(identityCard);
+                    if (userInfo == null) {
+                        UserInfo userInfo1 = UserInfo.builder()
+                                .realName(userName)
+                                .identityCard(identityCard)
+                                .phone(phone)
+                                .gender(gender)
+                                .department(dept)
+                                .subDepartment(subDept)
+                                .build();
+                        userMapper.insert(userInfo1);
                     }
+                }
 
-                    CheckupItem checkupItem=checkupItemMapper.querybyChineseName(inspectionItem);
+                //再将数据插入到 体检报告管理表中
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                PhysicalReport physicalReport = PhysicalReport.builder()
+                        .identityCard(identityCard)
+                        .physicalNumber(physicalNumber)
+                        .customerId(customerId)
+                        .physicalDate(simpleDateFormat.parse(physicalDate))
+                        .createDate(new Date())
+                        .yearFlag(annualManagement.getYearUuid())
+                        .build();
+                physicalReportMapper.insert(physicalReport);
+
+                //遍历除固定的那几列数据，插入到体检报告数据表中
+                for (int i = 9; i < titleCells.length; i++) {
+                    String inspectionItem = titleCells[i].getContents();
+                    String measuringData = cells[i].getContents();
+//                    System.out.println(titleCells[i].getContents());
+//                    System.out.println(cells[i].getContents());
+
+                    //查询该体检项目是否是对应的体检类型
+                    CheckupItem checkupItem = checkupItemMapper.querybyChineseName(inspectionItem);
+                    PhysicalReportItem physicalReportItem = new PhysicalReportItem();
                     if (checkupItem != null) {
                         if ("一般项目检查".equals(checkupItem.getClassification())) {
                             physicalReportItem.setItemType(1);
@@ -163,47 +192,35 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
                         } else if ("放射科".equals(checkupItem.getClassification())) {
                             physicalReportItem.setItemType(15);
                         }
-                        physicalReportItem.setUnit(checkupItem.getUnit());
+                        //拿取体检报告管理表中得报告id，再插入到 体检报告数据表中
+                        physicalReportItem.setReportId(physicalReport.getId());
                         physicalReportItem.setInspectionItem(inspectionItem);
                         physicalReportItem.setMeasuringResult(measuringData);
+                        physicalReportItem.setUnit(checkupItem.getUnit());
+                        physicalReportItemMapper.insert(physicalReportItem);
                     }
-
                 }
 
-                physicalReport.setCreateDate(new Date());
-                physicalReport.setYearFlag(annualManagement.getYearUuid());
-                //先讲数据插入到 体检报告管理表中
-                physicalReportMapper.insert(physicalReport);
-
-                //拿取体检报告管理表中得报告id，再插入到 体检报告数据表中
-                physicalReportItem.setReportId(physicalReport.getId());
-                physicalReportItemMapper.insert(physicalReportItem);
-
-
+                //拿取体检报告管理表中得报告id，再插入到 体检报告查看记录表
+                PhysicalViewReportRecord physicalViewReportRecord = PhysicalViewReportRecord.builder()
+                        .reportId(physicalReport.getId())
+                        .identityCard(identityCard)
+                        .view(0)
+                        .createDate(new Date())
+                        .build();
+                physicalViewReportRecordMapper.insert(physicalViewReportRecord);
             }
-
-
         } catch (IOException e) {
             throw new MarsException("导入数据时，发生异常");
         } catch (BiffException e) {
             throw new MarsException("读取文件错误");
+        } catch (ParseException e) {
+            throw new MarsException("日期转换失败");
         } finally {
             //关闭连接，释放资源
             workbook.close();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

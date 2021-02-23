@@ -1,23 +1,10 @@
 
-
-
 //添加用户
-var userInfoAdd = function () {
-    var superAdmin=$("#superAdmin").val();
-
-    if (superAdmin==0 || superAdmin=="0"){
-        var roleId=$("#addRoleId").val();
-        if(roleId=='' || roleId==null){
-            alert("请选择角色");
-            return false;
-        }
-    }
-
-
-    var a = $("#userInfoAddForm").serializeJson();
+var yearAdd = function () {
+    var a = $("#yearAddForm").serializeJson();
     loading();
     $.ajax({
-        url: "./user/add",
+        url: "./annualManagement/addYear",
         type: "post",
         data: JSON.stringify(a),
         contentType: "application/json",
@@ -25,7 +12,7 @@ var userInfoAdd = function () {
         success: function (data) {
             loaded();
             if (data.code == "0") {
-                $("#userInfoAddModal").modal("hide");
+                $("#yearAddModal").modal("hide");
                 $("input[type=reset]").trigger("click");
                 location.reload();
             } else {
@@ -40,22 +27,21 @@ var userInfoAdd = function () {
 }
 
 function showModal(id) {
-    $("#userInfoId").val(id);
-    $('#userInfoDelModal').modal('show');
+    $("#yearId").val(id);
+    $('#yearDelModal').modal('show');
 }
 
-var userInfoDel = function () {
+var yearDel = function () {
     loading();
     $.ajax({
-        url: "./user/deleteById",
+        url: "./annualManagement/deleteYearById",
         type: "post",
-        data: {"id": $("#userInfoId").val()},
+        data: {"id": $("#yearId").val()},
         dataType: "json",
         success: function (data) {
-
             loaded();
             if (data.code == "0") {
-                $('#userInfoDelModal').modal('hide');
+                $('#yearDelModal').modal('hide');
                 loadData();
             } else {
                 alert(data.msg);
@@ -68,23 +54,11 @@ var userInfoDel = function () {
     });
 }
 
- function userInfoEdit() {
-
-     var superAdmin=$("#editSuperAdmin").val();
-
-     if (superAdmin==0 || superAdmin=="0"){
-         var roleId=$("#editRoleId").val();
-         if(roleId=='' || roleId==null){
-             alert("请选择角色");
-             return false;
-         }
-     }
-
-
-     var a = $("#userInfoEditForm").serializeJson();
+function yearEdit() {
+    var a = $("#yearEditForm").serializeJson();
     loading();
     $.ajax({
-        url: "./user/update",
+        url: "./annualManagement/updateYear",
         type: "post",
         data: JSON.stringify(a),
         contentType: "application/json",
@@ -92,7 +66,7 @@ var userInfoDel = function () {
         success: function (data) {
             loaded();
             if (data.code == "0") {
-                $("#userInfoEditModal").modal("hide");
+                $("#yearoEditModal").modal("hide");
                 loadData();
                 //location.reload();
             } else {
@@ -123,10 +97,10 @@ $("#superAdmin").on("change",function () {
     }
 })
 
- function queryByUserId(id) {
+ function queryYearById(id) {
     loading();
     $.ajax({
-        url: "./user/queryById",
+        url: "./annualManagement/queryYearById",
         type: "post",
         data: {"id": id},
         dataType: "json",
@@ -137,22 +111,12 @@ $("#superAdmin").on("change",function () {
                 alert(result.msg);
                 return false;
             }
-
-            $("#userInfoEditModal").modal("show");
+            $("#yearEditModal").modal("show");
             $("#editId").val(data.id);
-            $("#editUserName").val(data.userName);
-            $("#editRealName").val(data.realName);
-            $("#editPassword").val(data.password);
-            $("#editStatus").val(data.status);
-            $("#editSuperAdmin").val(data.superAdmin);
+            $("#editYear").val(data.year);
             manager.loadRole("editRoleId");
             $("#editRoleId").val(data.roleId);
-            if (data.superAdmin==1){
-                $("#editRoleIdDiv").hide();
-            }else{
-                $("#editRoleIdDiv").show();
-            }
-            $("#userInfoEditModal").modal("show");
+            $("#yearEditModal").modal("show");
         },error: function (e) {
             loaded();
             alert("网络错误，请重试！！");
@@ -166,13 +130,13 @@ $(document).ready(function () {
 });
 function add() {
     manager.loadRole("addRoleId");
-    $("#userInfoAddModal").modal("show");
+    $("#yearAddModal").modal("show");
 }
 
 function loadData() {
 
-    $('#dataTables-userInfo').dataTable().fnDestroy();
-    var table = $('#dataTables-userInfo').on('xhr.dt', function (e, settings, json, xhr) {
+    $('#dataTables-year').dataTable().fnDestroy();
+    var table = $('#dataTables-year').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.code == 0) {
                 json.recordsTotal = json.data.itotalDisplayRecords;
                 json.recordsFiltered = json.data.itotalDisplayRecords;
@@ -240,7 +204,7 @@ function loadData() {
 
                 {
                     targets: 4, render: function (data, type, full, meta) {
-                        return '<a class="btn btn-success btn-" onclick="queryByUserId(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
+                        return '<a class="btn btn-success btn-" onclick="queryYearById(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
                             '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
                     }
                 }

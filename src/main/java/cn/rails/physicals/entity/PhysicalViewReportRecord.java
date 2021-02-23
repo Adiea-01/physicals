@@ -26,7 +26,7 @@ public class PhysicalViewReportRecord {
 
     //报告id
     @TableField(value = "report_id")
-    private String reportId;
+    private Long reportId;
 
     //身份证号
     @TableField(value = "identity_card")
@@ -34,7 +34,7 @@ public class PhysicalViewReportRecord {
 
     //是否已查看 0：未查看；1：已查看
     @TableField(value = "view")
-    private String view;
+    private int view;
 
     //查看日期
     @TableField(value = "view_date")
