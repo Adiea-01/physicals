@@ -1,0 +1,82 @@
+﻿.switch2{
+    width: 50px;
+    margin: 10px auto;
+ }
+.btn_fath{
+    margin-top: 10px;
+    position: relative;
+    border-radius: 20px;
+}
+.btn1{
+    float: left;
+}
+.btn2{
+    float: right;
+}
+.btnSwitch{
+    height: 22px;
+    width: 43px;
+    border: none;
+    color: #fff;
+    line-height: 40px;
+    font-size: 16px;
+    text-align: center;
+    z-index: 1;
+}
+.move{
+    z-index: 100;
+    width: 24px;
+    border-radius: 20px;
+    height: 22px;
+    position: absolute;
+    cursor: pointer;
+    border: 1px solid #828282;
+    background-color: #f1eff0;
+    box-shadow: 1px 2px 2px 1px #fff inset, 0 0 5px 1px #999;
+}
+.on .move{
+    left: 26px;
+}
+.on.btn_fath{
+    background-color:#00CC99;
+    display: flex;
+}
+.off.btn_fath{
+    background-color: red;
+    display: flex;
+}
+.success{
+    display: inline-block;
+    font-weight: 700;
+    width: 8px;
+    height: 17px;
+    transform: rotate(
+            45deg
+    );
+    border-style: solid;
+    border-width: 0 4px 4px 0;
+    margin-top: 1px;
+    margin-left: 9px;
+}
+.error {
+    position: relative;
+    margin: 2px 28px;
+    width: 7px;
+    height: 7px
+}
+.error::before,
+.error::after {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 3px;
+    top: 0px;
+    right: 15px;
+    background: #fff;
+}
+.error::before {
+    transform: rotate(45deg);
+}
+.error::after {
+    transform: rotate(-45deg);
+}

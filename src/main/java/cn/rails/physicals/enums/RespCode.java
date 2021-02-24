@@ -22,6 +22,7 @@ public enum RespCode {
     UPDATE_ERROR(101, "更新失败,请稍后再试"),
     DELETE_ERROR(102, "删除失败,请稍后再试"),
     UPDATE_REFRESH_ERROR(103, "更新失败,配置已被修改，请刷新后重新填写"),
+    RESET_PASSWORD_ERROR(104, "重置密码失败,请稍后再试"),
 
     EXIST_ERROR(200, "已存在"),
 

@@ -149,7 +149,7 @@ function add() {
 function loadData() {
 
     $('#dataTables-checkupItem').dataTable().fnDestroy();
-    var table = $('#dataTables-checkupItem').on('xhr.dt', function (e, settings, json, xhr) {
+   var table = $('#dataTables-checkupItem').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.code == 0) {
                 json.recordsTotal = json.data.itotalDisplayRecords;
                 json.recordsFiltered = json.data.itotalDisplayRecords;
@@ -190,11 +190,21 @@ function loadData() {
             bAutoWidth: false,
             lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             // data: data,
+            deferRender: true, //滚动
+            scrollY: 600, //滚动 固定高度
+            scrollX: true, //滚动
+            scrollCollapse: true, //滚动
+            scroller: true, //滚动
+            ordering:false,//排序图标
+            fnDrawCallback:function(oSettings ){
+                $(".table  thead tr th").removeClass("sorting_asc");
+            },
             columnDefs: [
                 {
                     targets: 0, render: function (data, type, full, meta) {
                         return full.id;
                     }
+
                 },
                 {
                     targets: 1, render: function (data, type, full, meta) {
@@ -259,5 +269,6 @@ function loadData() {
                 }
             ]
         });
+
 
 }

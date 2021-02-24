@@ -106,7 +106,6 @@ public class UserController {
 
     /**
      * 删除用户
-     *
      * @param id
      * @return
      */
@@ -116,6 +115,17 @@ public class UserController {
         return RespVo.success(userService.deleteUserInfoById(id));
     }
 
+    /**
+     * 密码重置
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/resetPassword")
+    @ResponseBody
+    public RespVo resetPassword(@RequestParam("id") Long id) {
+        userService.resetPassword(id);
+        return RespVo.success();
+    }
 
     /**
      * 模糊搜索

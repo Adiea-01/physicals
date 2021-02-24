@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Description:
@@ -113,9 +114,36 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public int deleteUserInfoById(Long id) {
-        int count=userMapper.deleteById(id);
+        int count = userMapper.deleteById(id);
         if (count < 0) {
             throw new MarsException(RespCode.DELETE_ERROR);
+        }
+        return count;
+    }
+
+    @Transactional
+    @Override
+    public int resetPassword(Long id) {
+        UserInfo userInfo = userMapper.selectOne(new QueryWrapper<UserInfo>().eq("id", id));
+        int count = 0;
+        if (userInfo != null) {
+            String identityCard = userInfo.getIdentityCard();
+            if (StringUtils.isNotBlank(identityCard)) {
+                    //获取盐，如果盐为空，则创建盐
+                    String salt = userInfo.getSalt();
+                    if (StringUtils.isEmpty(salt)) {
+                        salt = UUID.randomUUID().toString().replaceAll("-", "");
+                        userInfo.setSalt(salt);
+                    }
+                    String newpwd = identityCard.trim().substring(identityCard.length() - 6);
+                    String password = "Tj@" + newpwd;
+                    userInfo.setPassword(PasswordUtils.encryptPassword(password, salt));
+                    userInfo.setPwdStatus("0");
+                    count = userMapper.updateById(userInfo);
+                    if (count < 0) {
+                        throw new MarsException(RespCode.RESET_PASSWORD_ERROR);
+                    }
+                }
         }
         return count;
     }

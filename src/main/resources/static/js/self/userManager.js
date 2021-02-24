@@ -243,13 +243,8 @@ function loadDataEnvAndApp(realName) {
             $("#editPhone").val(data.phone);
             $("#editGender").val(data.gender);
             $("#editDepartment").val(data.department);
-            manager.loadRole("editRoleId");
-            $("#editRoleId").val(data.roleId);
-            if (data.superAdmin==1){
-                $("#editRoleIdDiv").hide();
-            }else{
-                $("#editRoleIdDiv").show();
-            }
+            // manager.loadRole("editRoleId");
+            // $("#editRoleId").val(data.roleId);
             $("#userInfoEditModal").modal("show");
         },error: function (e) {
             loaded();
@@ -261,9 +256,6 @@ function loadDataEnvAndApp(realName) {
 //查询所有用户
 $(document).ready(function () {
     loadData();
-    // $('#dataTables-userInfo>tr').click(trClick)
-
-
 });
 function add() {
     manager.loadRole("addRoleId");
@@ -314,10 +306,18 @@ function loadData() {
             bAutoWidth: false,
             lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             // data: data,
+            deferRender: true, //滚动
+            scrollY: 600, //滚动 固定高度
+            scrollX: true, //滚动
+            scrollCollapse: true, //滚动
+            scroller: true, //滚动
+            ordering:false,//排序图标
+            fnDrawCallback:function(oSettings ){
+                $(".table  thead tr th").removeClass("sorting_asc");
+            },
             columnDefs: [
                 {
                     targets: 0, render: function (data, type, full, meta) {
-                        // return '<span  ondblclick="queryByUserId(\'' + full.id + '\')">'+full.id+'</span>';
                         return full.id;
                     }
                 },
@@ -368,9 +368,20 @@ function loadData() {
                 {
                     targets: 8, render: function (data, type, full, meta) {
                         if (full.delFlag == 0) {
-                            return '<a class="btn btn-success btn-">开启</a>';
+                            return '<div class="switch2"> \n' +
+                                '  <div class="btn_fath clearfix on" onclick="toogle(this)"> \n' +
+                                '  <div class="move" data-state="on"></div> \n' +
+                                '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
+                                '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
+                                '  </div>';
                         } else {
-                            return '<a class="btn btn-warning btn-circle">停用</a>';
+                            return '<div class="switch2"> \n' +
+                                '  <div class="btn_fath clearfix off" onclick="toogle(this)"> \n' +
+                                '  <div class="move" data-state="off"></div> \n' +
+                                '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
+                                '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
+                                '  </div>';
+                            // return '<a class="btn btn-warning">停用</a>';
                         }
                     }
                 },
@@ -389,27 +400,53 @@ function loadData() {
                 // },
                 {
                     targets: 9, render: function (data, type, full, meta) {
-                        return '<a class="btn btn-success btn-" onclick="queryByUserId(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
-                            '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
-
-                        // return '<a class="btn btn-success btn-" onclick="queryByUserId(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>重置密码</a>';
+                        // return '<a class="btn btn-success btn-" onclick="queryByUserId(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
+                        //     '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
+                        return '<a class="btn btn-danger" onclick="resetPassword(\'' + full.id + '\')"><i class="glyphicon glyphicon-lock"></i>重置密码</a>';
                     }
                 }
             ],
-            "createdRow": function (row, data, dataIndex) {
-                // console.log(row)
-                // $(row).click()
-                // console.log(data)
-                // console.log(dataIndex)
 
-                // row : tr dom
-                // data: row data
-                // dataIndex:row data's index
-                if (data[4] == "A") {
-                    $(row).addClass('important');
-                }
-            },
         });
+
+
+    $('#dataTables-userInfo tbody').on( 'dblclick', 'tr', function (e) {
+        // var index = $(this).context._DT_RowIndex; //行号
+        var nTds = $('td', this);
+        var id = $(nTds[0]).text();  //得到第1列的值
+        queryByUserId(id)
+    } );
+
 
 }
 
+
+//密码重置
+function resetPassword(id) {
+    var resetPasswordMsg = confirm("是否确定密码重置？");
+    if(resetPasswordMsg){
+        loading();
+        $.ajax({
+            url: "./user/resetPassword",
+            type: "post",
+            data: {"id": id},
+            dataType: "json",
+            success: function (data) {
+                loaded();
+                if (data.code == "0") {
+                    $("#userInfoEditModal").modal("hide");
+                    loadData();
+                    alert(data.msg)
+                    //location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function (e) {
+                loaded();
+                alert("网络错误，请重试！！");
+            }
+        });
+    }
+
+}
