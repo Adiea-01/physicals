@@ -14,7 +14,7 @@ public class PasswordUtils {
     private static RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 
     private static String algorithmName = "md5";
-    private static int hashIterations = 520;
+    private static int hashIterations = 2;
 
     public static String getSalt() {
         return randomNumberGenerator.nextBytes().toHex();

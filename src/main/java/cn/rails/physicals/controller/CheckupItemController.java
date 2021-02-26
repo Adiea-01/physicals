@@ -77,14 +77,14 @@ public class CheckupItemController {
     }
 
     /**
-     * 删除体检项目
+     * 修改启用状态
      * @param id
      * @return
      */
-    @PostMapping(value = "/deleteCheckupItemById")
+    @PostMapping(value = "/updateCheckupItemDelFlag")
     @ResponseBody
-    public RespVo deleteCheckupItemById(@RequestParam("id") Long id) {
-        return RespVo.success(checkupItemService.deleteCheckupItemById(id));
+    public RespVo updateCheckupItemDelFlag(@RequestParam("id") Long id,@RequestParam("delFlag") int delFlag) {
+        return RespVo.success(checkupItemService.updateCheckupItemDelFlag(id,delFlag));
     }
 
 

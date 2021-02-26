@@ -306,7 +306,6 @@ function loadData() {
             bAutoWidth: false,
             lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             // data: data,
-            deferRender: true, //滚动
             scrollY: 600, //滚动 固定高度
             scrollX: true, //滚动
             scrollCollapse: true, //滚动
@@ -369,14 +368,14 @@ function loadData() {
                     targets: 8, render: function (data, type, full, meta) {
                         if (full.delFlag == 0) {
                             return '<div class="switch2"> \n' +
-                                '  <div class="btn_fath clearfix on" onclick="toogle(this)"> \n' +
+                                '  <div class="btn_fath clearfix on" onclick="disableSwitch(this,\'' + full.id + '\')"> \n' +
                                 '  <div class="move" data-state="on"></div> \n' +
                                 '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
                                 '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
                                 '  </div>';
                         } else {
                             return '<div class="switch2"> \n' +
-                                '  <div class="btn_fath clearfix off" onclick="toogle(this)"> \n' +
+                                '  <div class="btn_fath clearfix off" onclick="disableSwitch(this,\'' + full.id + '\')"> \n' +
                                 '  <div class="move" data-state="off"></div> \n' +
                                 '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
                                 '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
@@ -448,5 +447,39 @@ function resetPassword(id) {
             }
         });
     }
-
 }
+
+//禁用用户
+function disableSwitch(th, id) {
+    var switchData = switchButton(th, id, queryAjaxDeleteUserInfoById);
+    // console.log(switchData)
+}
+
+function queryAjaxDeleteUserInfoById(switchData) {
+    var id = switchData.get("id");
+    var delFlag = switchData.get("delFlag");
+    loading();
+    $.ajax({
+        url: "./user/updateUserInfoDelFlag",
+        type: "post",
+        data: {"id": id, "delFlag": delFlag},
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            loaded();
+            if (data.code == "0") {
+                $("#userInfoEditModal").modal("hide");
+                loadData();
+                // alert(data.msg)
+                //location.reload();
+            } else {
+                alert(data.msg);
+            }
+        },
+        error: function (e) {
+            loaded();
+            alert("网络错误，请重试！！");
+        }
+    });
+}
+

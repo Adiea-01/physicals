@@ -1,5 +1,6 @@
 package cn.rails.physicals.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.SqlCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -71,5 +72,8 @@ public class UserInfo extends BaseEntity {
     @TableField(value = "user_remark")
     private String userRemark;
 
+    //权限管理：1：系统管理  2：普通管理员 3：普通员工
+    @TableField(value = "is_super")
+    private int isSuper;
 
 }

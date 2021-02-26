@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 /**
  * @Description: 用户管理
@@ -39,6 +40,16 @@ public class UserController {
     public RespVo login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
         return userService.login(userName, password, request, response);
+    }
+
+    //退出登录
+    @RequestMapping(value = "/logout")
+    public String logout(HttpServletRequest request) {
+        Enumeration em = request.getSession().getAttributeNames();
+        while (em.hasMoreElements()) {
+            request.getSession().removeAttribute(em.nextElement().toString());
+        }
+        return "login";
     }
 
     /**
@@ -105,14 +116,14 @@ public class UserController {
     }
 
     /**
-     * 删除用户
+     * 禁用用户
      * @param id
      * @return
      */
-    @PostMapping(value = "/deleteUserInfoById")
+    @PostMapping(value = "/updateUserInfoDelFlag")
     @ResponseBody
-    public RespVo deleteUserInfoById(@RequestParam("id") Long id) {
-        return RespVo.success(userService.deleteUserInfoById(id));
+    public RespVo updateUserInfoDelFlag(@RequestParam("id") Long id,@RequestParam("delFlag") int delFlag) {
+        return RespVo.success(userService.updateUserInfoDelFlag(id,delFlag));
     }
 
     /**
@@ -126,6 +137,19 @@ public class UserController {
         userService.resetPassword(id);
         return RespVo.success();
     }
+
+    /**
+     * 一键密码重置
+     * @return
+     */
+    @PostMapping(value = "/resetPasswordAll")
+    @ResponseBody
+    public RespVo resetPasswordAll() {
+        userService.resetPasswordAll();
+        return RespVo.success();
+    }
+
+
 
     /**
      * 模糊搜索

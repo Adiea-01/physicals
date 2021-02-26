@@ -796,14 +796,13 @@ function initDateOpt(dateId) {
 $("#logout").on("click",function () {
     if(window.confirm('确定要退出登录吗?')){
         var top = getTopWinow();
-        top.location.href = '../user/logout';
+        top.location.href = './user/logout';
     }
 })
 $("#changePwd").on("click",function () {
     $("#pwdViewId").modal('show');
 })
 function resetPwd() {
-
     var pass =  $("#oldPwd").val();
     var $newpass = $("#newPwd").val();
     var $rePass = $("#newPwd2").val();
@@ -827,7 +826,7 @@ function resetPwd() {
 
     $.ajax({
         type: 'POST',
-        url: '../user/resetPwd',
+        url: './user/updatePwd',
         data: { pwd:pass,newPwd:$newpass},
         dataType: "JSON",
         success: function (data) {

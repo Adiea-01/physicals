@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -113,10 +114,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int deleteUserInfoById(Long id) {
-        int count = userMapper.deleteById(id);
+    public int updateUserInfoDelFlag(Long id, int delFlag) {
+        int count=userMapper.updateUserInfoDelFlag(id, delFlag);
         if (count < 0) {
-            throw new MarsException(RespCode.DELETE_ERROR);
+            throw new MarsException(RespCode.ENABLE_STATUS_ERROR);
         }
         return count;
     }
@@ -146,6 +147,37 @@ public class UserServiceImpl implements UserService {
                 }
         }
         return count;
+    }
+
+
+    @Transactional
+    @Override
+    public void resetPasswordAll() {
+        List<UserInfo> userInfoList=userMapper.selectAll();
+        for(int i=0;i<userInfoList.size();i++){
+            int count = 0;
+            UserInfo userInfo=userInfoList.get(i);
+            if(userInfo !=null){
+                String identityCard = userInfo.getIdentityCard();
+                if (StringUtils.isNotBlank(identityCard)) {
+                    //获取盐，如果盐为空，则创建盐
+                    String salt = userInfo.getSalt();
+                    if (StringUtils.isEmpty(salt)) {
+                        salt = UUID.randomUUID().toString().replaceAll("-", "");
+                        userInfo.setSalt(salt);
+                    }
+                    String newpwd = identityCard.trim().substring(identityCard.length() - 6);
+                    String password = "Tj@" + newpwd;
+                    userInfo.setPassword(PasswordUtils.encryptPassword(password, salt));
+                    userInfo.setPwdStatus("0");
+                    userInfo.setCreateDate(new Date());
+                    count = userMapper.updateById(userInfo);
+                    if (count < 0) {
+                        throw new MarsException(RespCode.RESET_PASSWORD_ERROR);
+                    }
+                }
+            }
+        }
     }
 
     @Override

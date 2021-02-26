@@ -81,10 +81,10 @@ public class CheckupItemServiceImpl implements CheckupItemService {
 
     @Transactional
     @Override
-    public int deleteCheckupItemById(Long id) {
-        int count = checkupItemMapper.deleteById(id);
+    public int updateCheckupItemDelFlag(Long id,int delFlag) {
+        int count = checkupItemMapper.updateCheckupItemDelFlag(id, delFlag);
         if (count < 0) {
-            throw new MarsException(RespCode.DELETE_ERROR);
+            throw new MarsException(RespCode.ENABLE_STATUS_ERROR);
         }
         return count;
     }

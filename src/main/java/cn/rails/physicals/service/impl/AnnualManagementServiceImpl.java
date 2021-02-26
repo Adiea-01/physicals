@@ -63,7 +63,8 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
 
     @Override
     public AnnualManagement queryYearById(Long id) {
-        return annualManagementMapper.selectById(id);
+        AnnualManagement annualManagement=annualManagementMapper.selectById(id);
+        return annualManagement;
     }
 
     @Transactional
@@ -78,11 +79,28 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
 
     @Transactional
     @Override
-    public int deleteYearById(Long id) {
-        int count = annualManagementMapper.deleteById(id);
+    public int updateYearDelFlag(Long id, int delFlag) {
+        int count = annualManagementMapper.updateYearDelFlag(id, delFlag);
         if (count < 0) {
-            throw new MarsException(RespCode.DELETE_ERROR);
+            throw new MarsException(RespCode.ENABLE_STATUS_ERROR);
         }
         return count;
+    }
+
+    @Transactional
+    @Override
+    public int updateDefaultYear(Long id) {
+        int resCount = 0;
+        //先讲所有的年份设置成0
+        int count = annualManagementMapper.updateDefaultYearAll(0);
+        if (count < 0) {
+            throw new MarsException("默认年份修改失败");
+        }
+        //再将当前id的年份设置成默认年
+        resCount = annualManagementMapper.updateDefaultYear(id, 1);
+        if (resCount < 0) {
+            throw new MarsException("默认年份修改失败");
+        }
+        return resCount;
     }
 }

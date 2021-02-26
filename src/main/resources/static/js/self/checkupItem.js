@@ -122,13 +122,6 @@ $("#superAdmin").on("change",function () {
             $("#editMaximum").val(data.maximum);
             $("#editUnit").val(data.unit);
             $("#editReferenceDescription").val(data.referenceDescription);
-            manager.loadRole("editRoleId");
-            $("#editRoleId").val(data.roleId);
-            if (data.superAdmin==1){
-                $("#editRoleIdDiv").hide();
-            }else{
-                $("#editRoleIdDiv").show();
-            }
             $("#checkupItemEditModal").modal("show");
         },error: function (e) {
             loaded();
@@ -190,7 +183,6 @@ function loadData() {
             bAutoWidth: false,
             lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             // data: data,
-            deferRender: true, //滚动
             scrollY: 600, //滚动 固定高度
             scrollX: true, //滚动
             scrollCollapse: true, //滚动
@@ -263,12 +255,78 @@ function loadData() {
 
                 {
                     targets: 8, render: function (data, type, full, meta) {
-                        return '<a class="btn btn-success btn-" onclick="queryCheckupItemById(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
-                            '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
+                        // return '<a class="btn btn-success btn-" onclick="queryCheckupItemById(\'' + full.id + '\')"><i class="glyphicon glyphicon-edit"></i>修改</a> &nbsp;&nbsp;' +
+                        //     '<a class="btn btn-warning btn-circle" onclick="showModal(\'' + full.id + '\')"> <i class="glyphicon glyphicon-trash"></i>删除</a>';
+                        if (full.delFlag == 0) {
+                            return '<div class="switch2"> \n' +
+                                '  <div class="btn_fath clearfix on" onclick="checkupItemSwitch(this,\'' + full.id + '\')"> \n' +
+                                '  <div class="move" data-state="on"></div> \n' +
+                                '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
+                                '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
+                                '  </div>';
+                        } else {
+                            return '<div class="switch2"> \n' +
+                                '  <div class="btn_fath clearfix off" onclick="checkupItemSwitch(this,\'' + full.id + '\')"> \n' +
+                                '  <div class="move" data-state="off"></div> \n' +
+                                '  <div class="btnSwitch btn1"><p class="success"></div> \n' +
+                                '  <div class="btnSwitch btn2"> <p class="error"></p></div> \n' +
+                                '  </div>';
+                        }
                     }
                 }
             ]
         });
 
+    $('#dataTables-checkupItem tbody').on( 'dblclick', 'tr', function (e) {
+        // var index = $(this).context._DT_RowIndex; //行号
+        var nTds = $('td', this);
+        var id = $(nTds[0]).text();  //得到第1列的值
+        queryCheckupItemById(id)
+    } );
 
 }
+
+
+//项目开关
+function checkupItemSwitch(th, id) {
+    var switchData = switchButton(th, id, checkupItemStatus);
+    // console.log(switchData)
+}
+
+function checkupItemStatus(switchData) {
+    var id = switchData.get("id");
+    var delFlag = switchData.get("delFlag");
+    loading();
+    $.ajax({
+        url: "./checkupItem/updateCheckupItemDelFlag",
+        type: "post",
+        data: {"id": id, "delFlag": delFlag},
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            loaded();
+            if (data.code == "0") {
+                $("#checkupItemEditModal").modal("hide");
+                loadData();
+                // alert(data.msg)
+                //location.reload();
+            } else {
+                alert(data.msg);
+            }
+        },
+        error: function (e) {
+            loaded();
+            alert("网络错误，请重试！！");
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+

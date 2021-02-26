@@ -19,9 +19,11 @@ public interface UserService {
 
     int updateUserInfo(UserInfo userInfo);
 
-    int deleteUserInfoById(Long id);
+    int updateUserInfoDelFlag(Long id,int delFlag);
 
     int resetPassword(Long id);
+
+    void resetPasswordAll();
 
     PageDataVo<UserInfo> searchUserInfoList(Integer start,Integer length,UserInfo userInfo);
 

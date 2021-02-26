@@ -19,6 +19,8 @@ public interface AnnualManagementService {
 
     int updateYear(AnnualManagement annualManagement);
 
-    int deleteYearById(Long id);
+    int updateYearDelFlag(Long id,int delFlag);
+
+    int updateDefaultYear(Long id);
 
 }

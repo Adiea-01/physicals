@@ -30,6 +30,9 @@ mybatis-plus:
   mapper-locations: classpath*:cn/rails/physicals/mapper/xml/*.xml
   #指定Mybatis的实体目录
   type-aliases-package: cn.rails.physicals.entity
+  #返回值没有字段及数据时，字段对应返回null
+  configuration:
+    call-setters-on-nulls: true
 
 #文件存放位置
 #uploadFilePath: /usr/local/

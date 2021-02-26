@@ -1,7 +1,6 @@
 package cn.rails.physicals.controller;
 
 import cn.rails.physicals.entity.AnnualManagement;
-import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.service.AnnualManagementService;
@@ -74,17 +73,28 @@ public class AnnualManagementController {
     }
 
     /**
-     * 删除年
+     * 修改年份状态
      * @param id
      * @return
      */
-    @PostMapping(value = "/deleteYearById")
+    @PostMapping(value = "/updateYearDelFlag")
     @ResponseBody
-    public RespVo deleteYearById(@RequestParam("id") Long id) {
-        return RespVo.success(annualManagementService.deleteYearById(id));
+    public RespVo updateYearDelFlag(@RequestParam("id") Long id, @RequestParam("delFlag") int delFlag) {
+        annualManagementService.updateYearDelFlag(id, delFlag);
+        return RespVo.success();
     }
 
-
+    /**
+     * 设置默认年份
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/updateDefaultYear")
+    @ResponseBody
+    public RespVo updateDefaultYear(@RequestParam("id") Long id) {
+        annualManagementService.updateDefaultYear(id);
+        return RespVo.success();
+    }
 
 
 

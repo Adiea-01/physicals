@@ -21,6 +21,6 @@ public interface CheckupItemService {
 
     int updateCheckupItem(CheckupItem checkupItem);
 
-    int deleteCheckupItemById(Long id);
+    int updateCheckupItemDelFlag(Long id,int delFlag);
 
 }

@@ -24,4 +24,10 @@ public interface UserMapper extends BaseMapper<UserInfo> {
 
     List<UserInfo> searchUserInfoList(UserInfo userInfo);
 
+    @Update("UPDATE system_user_info SET del_flag=#{delFlag} WHERE id=#{id}")
+    int updateUserInfoDelFlag(@Param("id")Long id, @Param("delFlag")int delFlag);
+
+    @Select("SELECT * FROM system_user_info")
+    List<UserInfo> selectAll();
+
 }
