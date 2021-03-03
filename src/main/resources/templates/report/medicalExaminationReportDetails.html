@@ -1,0 +1,907 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体检报告查询</title>
+    <script type="text/javascript" th:src="@{/js/plugins/jquery/jquery-1.12.4.min.js}"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script type="text/javascript" th:src="@{/js/plugins/bootstrap/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/plugins/vue/vue.js}"></script>
+</head>
+<style>
+  div#app {
+    width: 80%;
+    margin: 0 auto;
+ }
+ .textClass{
+   margin: 10px 0;
+   width: 67px;
+   text-align-last: justify;
+   font-weight: 900;
+   text-align: center;
+ }
+ .textClass_title{
+   margin: 10px 0;
+   /*width: 200px;*/
+   text-align-last: justify;
+   font-weight: 900;
+ } 
+ li.list-group-item.list-group_li {
+   width: 395px;
+   margin:0px 27%;
+   display: flex;
+   padding: 0px 14px;
+}
+ .textClass2{
+    margin: 10px 0;
+    width: 300px;
+    font-weight: 900;
+    text-align: left;
+ } 
+ .textClass3 {
+    margin: 10px -90px;
+    width: 200px;
+    font-weight: 900;
+}
+.ss{
+
+ }
+ .text_center{
+   text-align:center ;
+ }
+   .row.navbar-row {
+    width: 70%;
+    margin: 15px auto;
+}
+.col-xs-1 {
+  width: 12%;
+}
+.panel-default {
+   
+  border-color: #ddd;
+    border: 0px solid #ddd;
+    margin-top: 51px;
+
+}
+.col-xs-4 {
+    width: 26.333333%;
+}
+.list-group_li {
+  text-align: center;
+}
+.list-group-item {
+ border: 0px solid #fff;
+}
+.panel-heading.panel-heading_title {
+    /*width: 23%;*/
+    text-align: center; 
+    margin: 0px auto;
+    margin-bottom: 50px;
+    margin-top: 119px;
+}
+.panel-default>.panel-heading {
+    color: #333;
+    background-color: #fff;
+   border-color: #fff;
+}
+
+.panel-heading {
+    /* padding: 10px 15px; */
+    /* border-bottom: 1px solid transparent; */
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel-body {
+    padding: 15px;
+    margin-left: 48px;
+}
+td {
+    width: 20%;
+}
+.img1 {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+} 
+.img2{
+    width: 99%;
+    height: 170px;
+    margin: 0 auto;
+    display: block;
+}
+  .col-xs-2.navbar-row_btn {
+    display: flex;
+  }
+  a.btn.btn-info{
+    margin-right: 10px;
+  }
+  .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+     text-align: left;
+    border-top: 1px solid #ddd;
+  }
+  .h3, h3 {
+    font-size: 16px;
+  }
+  .panel-default_heading{
+    width: 400px;
+    margin: 0 auto;
+  }
+
+</style>
+<body> 
+  <div id = "app">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="row navbar-row">
+        <div class="col-xs-1">姓名:&nbsp{{data_userInfo.realName}}</div>
+        <div class="col-xs-4">体检编号:&nbsp{{data_userInfo.physicalNumber}}</div>
+        <div class="col-xs-2">部门:&nbsp{{data_userInfo.department}}</div>
+        <div class="col-xs-3">体检日期:&nbsp{{data_userInfo.physicalDate}}</div>
+        <div class="col-xs-2 navbar-row_btn">
+          <a class="btn btn-info" onclick="reportDownload()"><i class="glyphicon glyphicon-floppy-save"></i> 下载</a>
+          <a class="btn btn-warning btn-circle" onclick="printDetails()"><i class="glyphicon glyphicon-print"></i> 打印</a>
+        </div>
+
+      </div>
+    </nav>
+    <div class="panel panel-default panel-default_heading">
+      <!-- Default panel contents -->
+      <div class="panel-heading panel-heading_title textClass_title">
+        <h1>体检报告</h1>
+      </div>
+      <!-- List group -->
+      <ul class="list-group">
+        <li class="list-group-item list-group_li"><p class="textClass ss">单位</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.department}}</p></li>
+        <li class="list-group-item list-group_li">
+          <p class="textClass ss">体检编号</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.physicalNumber}}</p>
+          </li>
+        <li class="list-group-item list-group_li">
+          <p class="textClass ss">姓名</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.realName}}</p></li>
+        <li class="list-group-item list-group_li">
+          <p class="textClass ss">年龄</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{age}}岁</p>
+          </li>
+          <li class="list-group-item list-group_li">
+            <p class="textClass ss">性别</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.gender}}</p>
+            </li>
+            
+        <li class="list-group-item list-group_li">
+
+          <p class="textClass ss">电话</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.phone}}</p>
+        </li>
+        <li class="list-group-item list-group_li">
+          <p class="textClass ss">体检日期</p><p class="textClass3 ss">:</p>&nbsp&nbsp<p class="textClass2 ss">{{data_userInfo.physicalDate}}</p>
+          </li>
+      </ul>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4>尊敬的{{data_userInfo.realName}}：您好！
+         </h4>
+        </div>
+      <div class="panel-body">
+        感谢您光临中国铁科院社区卫生服务站。
+      </div>
+    </div>
+    <div class="panel  panel-warning">
+      <div class="panel-heading">
+        <h3 class="panel-title">体检结果及建议：在您本次体检的项目中，有以下几方面的问题敬请注意：</h3>
+      </div>
+      <div class="panel-body">
+        <h3>{{medicalAdvice.measuringResult}}</h3>
+      </div>
+    </div>
+    <div class="panel  panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">* 报告阅读说明：</h3>
+      </div>
+      <div class="panel-body">
+        1、此报告仅作健康保健参考之用，如对检查结果有疑问，请尽快向体检中心咨询；
+      </div>
+      <div class="panel-body">
+        2、医学科技发展至今，对于疾病筛检仍有其限制及检查盲点，健康未发现异常情况，并不代表完
+        全没有潜在性疾病，若出现任何症状请立即就医；
+      </div>
+      <div class="panel-body">
+        3、本次实验检查结果，只对本次送检标本负责。
+      </div>
+      <div class="panel-body">
+        联系电话：010 - 51849441,51874158
+      </div>
+      <div class="panel-body">
+        公交路线：可乘坐87、651、92、620、85路公交车皂君庙站。
+      </div>
+    </div>
+    <div class="panel  panel-success">
+      <div class="panel-heading text_center">口腔检查</div>
+      <div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">牙列图
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img th:src="@{/img/tooth/dentalSurface.jpg}" class="img1">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>检查项目</th>
+              <th>检查所见</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in oralExamination">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">牙齿护理知识
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p> 
+                  定期洁牙，提倡每半年或一年洁牙一次，定期清洁牙石，预防牙周疾病的发生。
+                </p>
+                <p>
+                  不要用牙齿咬坚硬的物品，以防止外伤。
+                </p>
+                <p>
+                  正确合理的刷牙方式是保护牙齿的最佳方法。
+                </p>
+                <p>
+                   建议定期去齿科医院进行检查，养成看牙医的习惯，早期治疗可避免病情恶化或导致全身其他疾病的发生。
+                </p>
+             </td>
+            </tr>
+            <tr>
+             <td>
+                <img th:src="@{/img/tooth/brushTeeth.jpg}" class="img2">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+    </div>
+    <div class="panel   panel-info">
+      <div class="panel-heading text_center">体检结果
+      </div>
+      <div class="">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">一般项目检查
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in generalinspection">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">血常规
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in routineBloodTest">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">尿常规
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in urinalysis">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">便隐血
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in fecalOccultBlood">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">实验室检查
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in laboratoryeExamination">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">性激素六项
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>缩写</td>
+              <td>检查结果</td>
+              <td>正常值参考</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in sixSexHormones">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.abbreviation}}</td>
+              <td>{{item.measuringResult}}</td>
+              <td>{{item.miximum}} - {{item.maximum}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">内科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in internalMedicine">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">外科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in Surgery">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">妇科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in gynaecology">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">眼科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in ophthalmologyDepartment">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">耳鼻咽喉科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in ENTDepartment">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">心电图室
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in eCGRoom">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">超声检查室
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in ultrasoundExaminationRoom">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">骨密度检查室
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in boneDensityExaminationRoom">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">放射科
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in radiologyDepartment">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="6">中医体质辨识
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>检查项目</td>
+              <td>检查所见</td>
+              <td>单位</td>
+              <!-- <td>提示</td> -->
+            </tr>
+            <tr v-for="item in identificationOfTCMConstitution">
+              <td>{{item.inspectionItem}}</td>
+              <td>{{item.measuringResult}}</td>
+               <td>{{item.unit}}</td>
+            </tr>
+            <tr>
+              <td>小结:</td>
+              <td colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+    </div>
+    
+  
+   
+    
+  </div>
+</body> 
+ <script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      queryId: "",
+      data_userInfo: "",
+      data_reportInfo: "",
+      medicalAdvice: "",
+      age: "",
+      oralExamination: "",//16：口腔检查
+      generalinspection: [],//一般检查
+      routineBloodTest: [],//血常规
+      urinalysis: [],//尿常规,
+      fecalOccultBlood: [],//便隐血
+      laboratoryeExamination: [],//实验室检查
+      sixSexHormones: [],//性激素六项
+      internalMedicine: [],//内科
+      Surgery: [],//外科
+      gynaecology: [],//妇科
+      ophthalmologyDepartment: [],//眼科
+      ENTDepartment: [],//耳鼻咽喉科
+      eCGRoom: [],//心电图室
+      ultrasoundExaminationRoom: [],//超声检查室
+      boneDensityExaminationRoom: [],//14：骨密度检查室
+      radiologyDepartment: [],//15：放射科
+      identificationOfTCMConstitution: [],//17：中医体质辨识
+    },
+    created: function () {
+      this.queryId = this.getQueryVariable("id")
+    },
+    computed: {},
+    //在Vue中使用jQuery
+    mounted: function () {
+      var _this = this;
+      // console.log(_this)
+      $.ajax({
+        // url: "./report/queryUserMedicalExaminationReport?id=" + _this.queryId,//请求的url地址
+        url: "./queryUserMedicalExaminationReport?id=" + _this.queryId,//请求的url地址
+        dataType: "json",   //返回格式为json
+        async: true, //请求是否异步，默认为异步，这也是ajax重要特性
+        type: "POST",   //请求方式
+        success: function (res) {
+          _this.data_userInfo = res.data.userInfo;
+          var ageOfBirth = Number(_this.getBirthdayFromIdCard(_this.data_userInfo.identityCard))
+          var dateofPhysicalExamination = Number(_this.obtainedIn(_this.data_userInfo.physicalDate))
+          _this.age = dateofPhysicalExamination - ageOfBirth
+          if (_this.data_userInfo.gender === 0) {
+            _this.data_userInfo.gender = "女"
+          } else {
+            _this.data_userInfo.gender = "男"
+          }
+          _this.data_reportInfo = res.data.reportInfo;
+          var reportInfo = res.data.reportInfo;
+          for (var i in reportInfo) {
+            if (reportInfo[i].classification === "总检建议") {
+              _this.medicalAdvice = reportInfo[i]
+            }
+            if (reportInfo[i].classification === "1") {
+              _this.generalinspection.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "2") {
+              _this.routineBloodTest.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "3") {
+              _this.urinalysis.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "4") {
+              _this.fecalOccultBlood.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "5") {
+              _this.laboratoryeExamination.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "6") {
+              _this.sixSexHormones.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "7") {
+              _this.internalMedicine.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "8") {
+              _this.Surgery.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "9") {
+              // console.log(reportInfo[i])
+              _this.gynaecology.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "10") {
+              _this.ophthalmologyDepartment.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "11") {
+              _this.ENTDepartment.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "12") {
+              _this.eCGRoom.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "13") {
+              _this.ultrasoundExaminationRoom.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "14") {
+              _this.boneDensityExaminationRoom.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "15") {
+              _this.radiologyDepartment.push(reportInfo[i])
+            }
+            if (reportInfo[i].classification === "16") {
+              _this.oralExamination.push(reportInfo[i])
+
+            }
+            if (reportInfo[i].classification === "17") {
+              _this.identificationOfTCMConstitution.push(reportInfo[i])
+            }
+          }
+          // console.log(_this.data_reportInfo)
+          //请求成功时处理，一般只用到这一个
+        },
+        complete: function () {
+          //请求完成的处理
+        },
+        error: function () {
+          //请求出错处理
+        }
+      });
+    },
+    methods: {
+      getQueryVariable: function (variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) {
+            return pair[1];
+          }
+        }
+        return (false);
+      },
+      getBirthdayFromIdCard: function (idCard) {
+        var birthday = "";
+        if (idCard != null && idCard != "") {
+          if (idCard.length == 15) {
+            birthday = "19" + idCard.substr(6, 2);
+          } else if (idCard.length == 18) {
+            birthday = idCard.substr(6, 4);
+          }
+
+          birthday = birthday.replace(/(.{4})(.{2})/, "$1-$2-");
+        }
+        return birthday;
+      },
+      //年获取
+      obtainedIn: function (idCard) {
+        var birthday = "";
+        birthday = idCard.substr(0, 4)
+        return birthday;
+      }
+    }
+
+  })
+
+
+  //在线打印
+  function printDetails() {
+    window.print();
+  }
+
+  function reportDownload() {
+      $.ajax({
+          url: "./reportDownload",
+          type: "POST",
+          data: {"id": "17222"},
+          dataType: "json",
+          success: function (data) {
+              if (data.code == "0") {
+                  loadData();
+                  alert(data.msg);
+              } else {
+                  alert(data.msg);
+              }
+          }
+      });
+  }
+
+</script>
+</html>

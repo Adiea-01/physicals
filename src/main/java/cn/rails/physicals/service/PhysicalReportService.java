@@ -15,4 +15,7 @@ public interface PhysicalReportService {
 
     Map<String,Object> queryUserMedicalExaminationReport(HttpServletRequest request,Long id);
 
+    void reportDownload(Long id);
+
+
 }

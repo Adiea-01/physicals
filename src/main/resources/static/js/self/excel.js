@@ -1,6 +1,7 @@
 
 
 function queryGlyphicon() {
+    loading();
     // var formData = new FormData(document.querySelector("#excelFile"));//获取form值
     var formData = new FormData();//获取form值
     formData.append("excelFile", $("#excelFile")[0].files[0]);
@@ -13,7 +14,13 @@ function queryGlyphicon() {
         processData: false,  // 不处理数据
         contentType: false,   // 不设置内容类型
         success:function(data){
-            alert(data.msg);
+            loaded();
+            if (data.code == "0") {
+                loadData();
+                alert(data.msg);
+            } else {
+                alert(data.msg);
+            }
         }
     });
 

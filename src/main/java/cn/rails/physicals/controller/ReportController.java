@@ -8,10 +8,7 @@ import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +104,14 @@ public class ReportController {
         return RespVo.success(physicalReportService.queryReportList(request,start, length));
     }
 
+    /**
+     * 查看详情跳转
+     * @return
+     */
+    @RequestMapping("/viewDetailsJump")
+    public String viewDetailsJump() {
+        return "report/medicalExaminationReportDetails";
+    }
 
     /**
      * 用户查看体检报告详情
@@ -117,11 +122,18 @@ public class ReportController {
     @PostMapping(value = "/queryUserMedicalExaminationReport")
     @ResponseBody
     public RespVo queryUserMedicalExaminationReport(@RequestParam("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//        response.setHeader("Access-Control-Max-Age", "3600");
+//        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
         return RespVo.success(physicalReportService.queryUserMedicalExaminationReport(request,id));
+    }
+
+    @PostMapping("/reportDownload")
+    @ResponseBody
+    public RespVo reportDownload(Long id){
+        physicalReportService.reportDownload(id);
+        return RespVo.success();
     }
 
 

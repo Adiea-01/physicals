@@ -11,7 +11,7 @@ import java.util.List;
  * @Author: pan zhenghui
  * @Date: 2021/2/3 15:51
  */
-@TableName("menu")
+@TableName("system_menu")
 @Data
 @Builder
 @NoArgsConstructor

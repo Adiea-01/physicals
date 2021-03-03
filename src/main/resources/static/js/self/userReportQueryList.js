@@ -98,28 +98,16 @@ function loadData() {
 }
 
 
-
+//查看报告详情
 function viewDetails(id) {
-    loading();
-    $.ajax({
-        url: "./report/updateUserInfoDelFlag",
-        type: "post",
-        data: {"id": id},
-        dataType: "json",
-        success: function (data) {
-            loaded();
-            if (data.code == "0") {
-                loadData();
-                // alert(data.msg)
-            } else {
-                alert(data.msg);
-            }
-        },
-        error: function (e) {
-            loaded();
-            alert("网络错误，请重试！！");
-        }
-    });
+    openWin("./report/viewDetailsJump?id=" + id)
+}
+
+//打开一个新窗口
+function openWin(url) {
+    var myWin = window.open(url, 'newwindow', 'height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')
+    myWin.resizeTo(1400, 1000);    //调整大小
+    myWin.moveTo(300, 300);
 }
 
 

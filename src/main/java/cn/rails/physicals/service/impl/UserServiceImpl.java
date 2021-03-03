@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
             throw new MarsException(RespCode.USER_OR_PASSWORD_IS_ERROR);
         }
         userMapper.updateLastLoginTime(userInfo.getId(), new Timestamp(System.currentTimeMillis()));
+        request.getSession().setAttribute("userInfo", userInfo);
         return RespVo.success();
     }
 
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
     public PageDataVo<UserInfo> queryAll(Integer start, Integer length) {
         Page page = PageHelper.startPage((start / length) + 1, length);
         List<UserInfo> userInfoList = userMapper.queryAll();
+//        userMapper.selectList(null);
         PageDataVo<UserInfo> pageData = new PageDataVo<>();
         pageData.setData(userInfoList);
         pageData.setITotal(page.getTotal());

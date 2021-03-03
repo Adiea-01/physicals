@@ -108,6 +108,26 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>pd4ml_demo</groupId>
+            <artifactId>pd4ml_demo</artifactId>
+            <version>1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/pd4ml_demo-1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>ss_css2</groupId>
+            <artifactId>ss_css2</artifactId>
+            <version>1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ss_css2-1.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
