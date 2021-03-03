@@ -46,6 +46,14 @@ function loadData() {
             bAutoWidth: false,
             lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]],
             // data: data,
+            scrollY: 600, //滚动 固定高度
+            scrollX: true, //滚动
+            scrollCollapse: true, //滚动
+            scroller: true, //滚动
+            ordering:false,//排序图标
+            fnDrawCallback:function(oSettings ){
+                $(".table thead tr th").removeClass("sorting_asc");
+            },
             columnDefs: [
                 {
                     targets: 0, render: function (data, type, full, meta) {

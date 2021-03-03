@@ -34,7 +34,29 @@ mybatis-plus:
   configuration:
     call-setters-on-nulls: true
 
+
+#移动端密钥
+DES_KEY: 19491001
+
+
 #文件存放位置
 #uploadFilePath: /usr/local/
 
 uploadFilePath: D:\
+
+
+#单点登录密钥-测试环境
+tjPublicKey: '{"kty":"RSA","kid":"726803164639100032","alg":"RS256","n":"sOBQg0sYpxF9foifAaSM4KB-LQ-BDUi-u2eUr8FiuMgSTeQpLhndeSK9U5We_uxx69mZ1yzezVKRskW3CQOzXGKoiHOGjPjZU_YG1OL7p6T2AdBoS8pCFnqoFky7xiMXL1ELiJ6ezoN6mbIFSpy13i2nd0TCnJzC2op7fYqegM8pNM5OrMkzc_xqLJWwN9z2HWxbHW0mtgLsx-cfRzoGD6GWhWpnaU287GXOj8aAH0xMc4eJoJ9jxq8zb2wQVUtrJgO8xkZTwKqPdzx9qRM7D98zAJHdSCYz27AunWf2ddVMo5ixvngSe4IAf7BnvX2zyIR90Pot3-WdrHi-WYdzWw","e":"AQAB"}'
+
+#单点登录密钥-生产环境
+#tjPublicKey：{"kty":"RSA","kid":"7386798824867824049","alg":"RS256","n":"y66QBu4NfMlFB8FrXvOlw3xll3vyMMeQgsw4I1TjElPrMm_ptwRFIbW5xndoL-Qy9BQTadJhA8IYM_kwyW_QyUdUJzkbf2mA9Ugc4qXGo_GPAbL6qOCfeqgPP1gKgpB4sEWI_g2dxw8-Xx6eX-D5J3jpXdx6EcmYNORivLJ1yEI25k-OBZV9SWFautHd0MQHf83EsOVOGlLT7DCW7nvNYpMeQ6uwMuSNCRd2CvsrUXDbyzWQUHNhNF0dkKMwjBE8rs4P1WSh61JehgJMvuX5KBhljYej46jMAvF1GEGS1hdjfbVTmOke8KcDDj9FwhNqSVOmhXtU2rCgfcvtahJtow","e":"AQAB"}
+
+
+
+
+
+
+
+
+
+

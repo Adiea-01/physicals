@@ -1,5 +1,8 @@
 package cn.rails.physicals.service.impl;
 
+import cn.rails.physicals.entity.UserInfo;
+import cn.rails.physicals.enums.RespCode;
+import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.mapper.PhysicalReportMapper;
 import cn.rails.physicals.mapper.PhysicalViewReportRecordMapper;
 import cn.rails.physicals.service.PhysicalReportService;
@@ -21,6 +24,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Description: 体检报告查看
@@ -57,8 +61,13 @@ public class PhysicalReportServiceImpl implements PhysicalReportService {
 
     @Override
     public PageDataVo<Map<String, Object>> queryReportList(HttpServletRequest request, Integer start, Integer length) {
-        Object us = request.getAttribute("userInfo");
-        Long id = Long.valueOf("3");
+        Object obj=request.getSession().getAttribute("userInfo");
+        if(Objects.isNull(obj)){
+            throw new MarsException("session中用户为空");
+        }
+        UserInfo userInfo = (UserInfo) obj;
+        Long id = userInfo.getId();
+//        Long id = Long.valueOf("3");
         Page page = PageHelper.startPage((start / length) + 1, length);
         List<Map<String, Object>> mapList = physicalReportMapper.queryReportList(id);
         PageDataVo<Map<String, Object>> pageData = new PageDataVo<>();
