@@ -133,6 +133,7 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
                                 .gender(gender)
                                 .department(dept)
                                 .subDepartment(subDept)
+                                .isSuper(3)
                                 .build();
                         userMapper.insert(userInfo1);
                     }

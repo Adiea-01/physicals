@@ -34,7 +34,7 @@ public class Interceptor implements HandlerInterceptor {
         }else {
             response.sendRedirect(url(request)+"/user/login");
         }
-        return false;
+        return true;
     }
 
     public String url(HttpServletRequest request){
