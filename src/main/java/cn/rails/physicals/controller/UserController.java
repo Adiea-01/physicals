@@ -4,6 +4,7 @@ import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.service.UserService;
+import cn.rails.physicals.util.CookieUtil;
 import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,12 @@ public class UserController {
 
     //退出登录
     @RequestMapping(value = "/logout")
-    public String logout(HttpServletRequest request) {
-        Enumeration em = request.getSession().getAttributeNames();
-        while (em.hasMoreElements()) {
-            request.getSession().removeAttribute(em.nextElement().toString());
-        }
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.deleteCookie(request,response);
+//        Enumeration em = request.getSession().getAttributeNames();
+//        while (em.hasMoreElements()) {
+//            request.getSession().removeAttribute(em.nextElement().toString());
+//        }
         return "login";
     }
 

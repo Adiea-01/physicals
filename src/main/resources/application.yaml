@@ -47,10 +47,10 @@ tjPublicKey: '{"kty":"RSA","kid":"726803164639100032","alg":"RS256","n":"sOBQg0s
 
 
 #linux文件存放位置
-#uploadFilePath: /usr/local/
+uploadFilePath: /usr/local/excelData/
 
 #windows文件存放位置
-uploadFilePath: D:\
+#uploadFilePath: D:\
 
 
 

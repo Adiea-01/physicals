@@ -5,6 +5,8 @@ import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.mapper.UserMapper;
 import cn.rails.physicals.service.UserService;
+import cn.rails.physicals.util.CookieUtil;
+import cn.rails.physicals.util.JwtTokenUtil;
 import cn.rails.physicals.util.PasswordUtils;
 import cn.rails.physicals.vo.PageDataVo;
 import cn.rails.physicals.vo.RespVo;
@@ -59,7 +61,16 @@ public class UserServiceImpl implements UserService {
             throw new MarsException(RespCode.USER_OR_PASSWORD_IS_ERROR);
         }
         userMapper.updateLastLoginTime(userInfo.getId(), new Timestamp(System.currentTimeMillis()));
-        request.getSession().setAttribute("userInfo", userInfo);
+        String roleName ="";
+        int roleFlag=userInfo.getIsSuper();
+        if(roleFlag==1){
+            roleName = "系统管理员";
+        }else if(roleFlag==3){
+            roleName = "普通员工";
+        }
+        String token = JwtTokenUtil.createToken(userInfo.getId(),userInfo.getRealName(),roleName,userInfo.getIsSuper()==1);
+        CookieUtil.setCookie(request,response,userInfo.getRealName(),roleName,token,true);
+//        request.getSession().setAttribute("userInfo", userInfo);
         return RespVo.success();
     }
 

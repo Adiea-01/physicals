@@ -9,6 +9,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import jxl.read.biff.WorkbookParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +64,7 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
 
     @Transactional
     @Override
-    public void importPhysicalData(MultipartFile multipartFile) {
+    public void importPhysicalData(MultipartFile multipartFile) throws IOException {
         //获取原始的文件名
         String originalFilename = multipartFile.getOriginalFilename();
         //判断如果不是excel文件的话，就不上传了
@@ -72,32 +74,33 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
         //获取绝对路径
 //      String filePath = getProjectRootPath();
         //指定文件存放位置
-        String filePath = uploadFilePath;//指定存放位置/usr/local/
-        //年月日加随机数路径
-        String datePath = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMdd") + File.separator + RandomUtils.getRandom(100);
-        //拼接路径:uploadFile\体检报告\20200714\27
-        filePath = filePath + "uploadFile" + File.separator + "体检报告" + File.separator + datePath;
+//        String filePath = uploadFilePath;//指定存放位置/usr/local/
+//        //年月日加随机数路径
+//        String datePath = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMdd") + File.separator + RandomUtils.getRandom(100);
+//        //拼接路径:uploadFile\体检报告\20200714\27
+//        filePath = filePath + "uploadFile" + File.separator + "体检报告" + File.separator + datePath;
         /*
           File的两个参数：
           parent:绝对路径不包括文件名的（就是目录路径）
           child:文件名
          */
-        File targetFile = new File(filePath, originalFilename);
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
+//        File targetFile = new File(filePath, originalFilename);
+//        if (targetFile.exists()) {
+//            throw new MarsException("目录已存在");
+////            targetFile.mkdirs();
+//        }
+
+
+
+
         Workbook workbook = null;
+        InputStream inputStream = multipartFile.getInputStream();
         try {
-            //把上传的文件保存
-            multipartFile.transferTo(targetFile);
-            //使用jxl读取excel表中的数据
-            workbook = Workbook.getWorkbook(targetFile);
+             workbook = WorkbookParser.getWorkbook(inputStream);
             Sheet sheet = workbook.getSheet(0);
             //读取excel表中的数据写入到数据库
-
             int rowsCount = sheet.getRows();//总行数
             int columnsCount = sheet.getColumns();//总列数
-
             AnnualManagement annualManagement = annualManagementMapper.queryDefaultYear(1);
             //先获取title行
             Cell[] titleCells = sheet.getRow(0);
@@ -211,15 +214,20 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
                         .build();
                 physicalViewReportRecordMapper.insert(physicalViewReportRecord);
             }
-        } catch (IOException e) {
-            throw new MarsException("导入数据时，发生异常");
-        } catch (BiffException e) {
+//        } catch (IOException e) {
+//            log.error("file save",e);
+//            throw new MarsException("导入数据时，发生异常");
+        } catch (BiffException bi) {
+            log.error("file read",bi);
             throw new MarsException("读取文件错误");
-        } catch (ParseException e) {
+        } catch (ParseException parse) {
+            log.error("date",parse);
             throw new MarsException("日期转换失败");
         } finally {
             //关闭连接，释放资源
-            workbook.close();
+            if (workbook != null) {
+                workbook.close();
+            }
         }
     }
 

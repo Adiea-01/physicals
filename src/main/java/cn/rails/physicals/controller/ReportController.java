@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @Description: 体检报告&体检数据导入
@@ -55,7 +56,7 @@ public class ReportController {
      */
     @PostMapping(value = "/uploadExcel")
     @ResponseBody
-    private RespVo importExcel(@RequestParam(value = "excelFile", required = false) MultipartFile multipartFile) {
+    private RespVo importExcel(@RequestParam(value = "excelFile", required = false) MultipartFile multipartFile) throws IOException {
 
         if (multipartFile == null) {
             throw new MarsException("请先选择要导入的excel文件");
