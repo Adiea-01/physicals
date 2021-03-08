@@ -514,7 +514,7 @@ td {
             </tr>
           </tbody>
         </table>
-        <table class="table table-bordered">
+        <table class="table table-bordered" v-if="data_userInfo.gender === '女'">
           <thead>
             <tr>
               <th colspan="6">妇科
@@ -732,7 +732,7 @@ td {
       data_reportInfo: "",
       medicalAdvice: "",
       age: "",
-      oralExamination: "",//16：口腔检查
+      oralExamination: [],//16：口腔检查
       generalinspection: [],//一般检查
       routineBloodTest: [],//血常规
       urinalysis: [],//尿常规,
@@ -827,6 +827,7 @@ td {
               _this.radiologyDepartment.push(reportInfo[i])
             }
             if (reportInfo[i].classification === "16") {
+              console.log(reportInfo[i])
               _this.oralExamination.push(reportInfo[i])
 
             }
