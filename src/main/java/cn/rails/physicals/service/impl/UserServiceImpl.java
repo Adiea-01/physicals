@@ -61,16 +61,16 @@ public class UserServiceImpl implements UserService {
             throw new MarsException(RespCode.USER_OR_PASSWORD_IS_ERROR);
         }
         userMapper.updateLastLoginTime(userInfo.getId(), new Timestamp(System.currentTimeMillis()));
-        String roleName ="";
-        int roleFlag=userInfo.getIsSuper();
-        if(roleFlag==1){
-            roleName = "系统管理员";
-        }else if(roleFlag==3){
-            roleName = "普通员工";
-        }
-        String token = JwtTokenUtil.createToken(userInfo.getId(),userInfo.getRealName(),roleName,userInfo.getIsSuper()==1);
-        CookieUtil.setCookie(request,response,userInfo.getRealName(),roleName,token,true);
-//        request.getSession().setAttribute("userInfo", userInfo);
+//        String roleName ="";
+//        int roleFlag=userInfo.getIsSuper();
+//        if(roleFlag==1){
+//            roleName = "系统管理员";
+//        }else if(roleFlag==3){
+//            roleName = "普通员工";
+//        }
+//        String token = JwtTokenUtil.createToken(userInfo.getId(),userInfo.getRealName(),roleName,userInfo.getIsSuper()==1);
+//        CookieUtil.setCookie(request,response,userInfo.getRealName(),roleName,token,true);
+        request.getSession().setAttribute("userInfo", userInfo);
         return RespVo.success();
     }
 
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addUserInfo(UserInfo userInfo) {
         String identityCard = userInfo.getIdentityCard();
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectById(id);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateUserInfo(UserInfo userInfo) {
         int count = userMapper.updateById(userInfo);
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateUserInfoDelFlag(Long id, int delFlag) {
         int count=userMapper.updateUserInfoDelFlag(id, delFlag);
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int resetPassword(Long id) {
         UserInfo userInfo = userMapper.selectOne(new QueryWrapper<UserInfo>().eq("id", id));
@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void resetPasswordAll() {
         List<UserInfo> userInfoList=userMapper.selectAll();

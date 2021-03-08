@@ -1,6 +1,7 @@
 package cn.rails.physicals.service.impl;
 
 import cn.rails.physicals.entity.Menu;
+import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.mapper.MenuMapper;
 import cn.rails.physicals.model.LoginModel;
 import cn.rails.physicals.service.MenuService;
@@ -37,44 +38,44 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void loadMenuList(Object handler, HttpServletRequest request) {
-//        Object obj = request.getSession().getAttribute("userInfo");
-//        String requestUrl = request.getRequestURI();
-//        if (obj != null) {
-//            UserInfo userInfo = (UserInfo) obj;
-//            int superNum = userInfo.getIsSuper();
+        Object obj = request.getSession().getAttribute("userInfo");
+        String requestUrl = request.getRequestURI();
+        if (obj != null) {
+            UserInfo userInfo = (UserInfo) obj;
+            int superNum = userInfo.getIsSuper();
             List<Menu> menuList = null;
-//            if (superNum == 1) {
-//                menuList = menuMapper.queryMenuByCode("1");
-//            } else {
-//                menuList = menuMapper.queryMenuByCode("3");
-//            }
-//            if (CollectionUtils.isNotEmpty(menuList)) {
-//                menuList = searchChildMenu(menuList, requestUrl);
-//            }
-//            request.setAttribute("menuList", menuList);
-//        }
-
-
-        if (handler instanceof HandlerMethod) {
-            LoginModel model = userLoginService.getLogin();
-            if (model == null) {
-                log.info(" loadMenuList userInfo is null");
-                return;
-            }
-            if(Objects.equals("管理员",model.getRoleName())){
+            if (superNum == 1) {
                 menuList = menuMapper.queryMenuByCode("1");
-            }else {
+            } else {
                 menuList = menuMapper.queryMenuByCode("3");
             }
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Method method = handlerMethod.getMethod();
-            String requestUrl = request.getRequestURI();
-            // 判断接口是否需要登录
             if (CollectionUtils.isNotEmpty(menuList)) {
                 menuList = searchChildMenu(menuList, requestUrl);
             }
             request.setAttribute("menuList", menuList);
         }
+
+
+//        if (handler instanceof HandlerMethod) {
+//            LoginModel model = userLoginService.getLogin();
+//            if (model == null) {
+//                log.info(" loadMenuList userInfo is null");
+//                return;
+//            }
+//            if(Objects.equals("管理员",model.getRoleName())){
+//                menuList = menuMapper.queryMenuByCode("1");
+//            }else {
+//                menuList = menuMapper.queryMenuByCode("3");
+//            }
+//            HandlerMethod handlerMethod = (HandlerMethod) handler;
+//            Method method = handlerMethod.getMethod();
+//            String requestUrl = request.getRequestURI();
+//            // 判断接口是否需要登录
+//            if (CollectionUtils.isNotEmpty(menuList)) {
+//                menuList = searchChildMenu(menuList, requestUrl);
+//            }
+//            request.setAttribute("menuList", menuList);
+//        }
     }
 
 

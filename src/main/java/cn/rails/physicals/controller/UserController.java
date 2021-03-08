@@ -46,11 +46,11 @@ public class UserController {
     //退出登录
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.deleteCookie(request,response);
-//        Enumeration em = request.getSession().getAttributeNames();
-//        while (em.hasMoreElements()) {
-//            request.getSession().removeAttribute(em.nextElement().toString());
-//        }
+//        CookieUtil.deleteCookie(request,response);
+        Enumeration em = request.getSession().getAttributeNames();
+        while (em.hasMoreElements()) {
+            request.getSession().removeAttribute(em.nextElement().toString());
+        }
         return "login";
     }
 

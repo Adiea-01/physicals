@@ -173,9 +173,11 @@ public class JwtController {
         }
         Map<String, Object> resultMap = physicalReportMapper.queryUserMedicalExaminationReportByInfo(Long.valueOf(id));
         Object obj = resultMap.get("identityCard");
-        if (obj != null) {
+        Object obj1 = resultMap.get("yearFlag");
+        if (obj != null && obj1 !=null) {
             String identityCard = obj.toString();
-            List<Map<String, Object>> mapList = physicalReportMapper.queryUserMedicalExaminationReport(identityCard);
+            String yearFlag = obj1.toString();
+            List<Map<String, Object>> mapList = physicalReportMapper.queryUserMedicalExaminationReport(identityCard,yearFlag);
             map.put("userInfo", resultMap);
             map.put("reportInfo", mapList);
         }

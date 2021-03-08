@@ -47,7 +47,7 @@ public class CheckupItemServiceImpl implements CheckupItemService {
         return pageData;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addCheckupItem(CheckupItem checkupItem) {
         String chineseName = checkupItem.getChineseName();
@@ -69,7 +69,7 @@ public class CheckupItemServiceImpl implements CheckupItemService {
         return checkupItemMapper.selectById(id);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateCheckupItem(CheckupItem checkupItem) {
         int count = checkupItemMapper.updateById(checkupItem);
@@ -79,7 +79,7 @@ public class CheckupItemServiceImpl implements CheckupItemService {
         return count;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateCheckupItemDelFlag(Long id,int delFlag) {
         int count = checkupItemMapper.updateCheckupItemDelFlag(id, delFlag);

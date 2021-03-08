@@ -62,7 +62,7 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
     @Resource
     private CheckupItemMapper checkupItemMapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void importPhysicalData(MultipartFile multipartFile) throws IOException {
         //获取原始的文件名

@@ -43,7 +43,7 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
         return pageData;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addYear(AnnualManagement annualManagement) {
         String year = annualManagement.getYear();
@@ -67,7 +67,7 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
         return annualManagement;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateYear(AnnualManagement annualManagement) {
         int count = annualManagementMapper.updateById(annualManagement);
@@ -77,7 +77,7 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
         return count;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateYearDelFlag(Long id, int delFlag) {
         int count = annualManagementMapper.updateYearDelFlag(id, delFlag);
@@ -87,7 +87,7 @@ public class AnnualManagementServiceImpl implements AnnualManagementService {
         return count;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateDefaultYear(Long id) {
         int resCount = 0;

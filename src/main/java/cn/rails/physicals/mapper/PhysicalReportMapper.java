@@ -21,7 +21,7 @@ public interface PhysicalReportMapper extends BaseMapper<PhysicalReport> {
 
 
     //查询用户体检基础信息
-    @Select("SELECT pr.id AS id,pr.physical_number AS physicalNumber,pr.physical_date AS physicalDate,sui.identity_card AS identityCard,sui.real_name AS realName,sui.department AS department,sui.gender AS gender,sui.phone AS phone FROM system_user_info sui " +
+    @Select("SELECT pr.id AS id,pr.physical_number AS physicalNumber,pr.physical_date AS physicalDate,pr.year_flag AS yearFlag,sui.identity_card AS identityCard,sui.real_name AS realName,sui.department AS department,sui.gender AS gender,sui.phone AS phone FROM system_user_info sui " +
             "LEFT JOIN physical_report pr ON sui.identity_card = pr.identity_card " +
             "WHERE pr.id = #{id}")
     Map<String, Object> queryUserMedicalExaminationReportByInfo(@Param("id") Long id);
@@ -30,8 +30,8 @@ public interface PhysicalReportMapper extends BaseMapper<PhysicalReport> {
     @Select("SELECT pri.id AS id,pri.inspection_item AS inspectionItem,pri.measuring_result AS measuringResult,pci.classification AS classification,pci.miximum AS miximum,pci.maximum AS maximum,pci.unit AS unit,pci.abbreviation AS abbreviation FROM physical_report pr " +
             "LEFT JOIN physical_report_item pri ON pr.id = pri.report_id " +
             "LEFT JOIN physical_checkup_item pci ON pri.inspection_item = pci.chinese_name " +
-            "WHERE pr.identity_card = #{identityCard}")
-    List<Map<String, Object>> queryUserMedicalExaminationReport(@Param("identityCard") String identityCard);
+            "WHERE pr.identity_card = #{identityCard} AND pr.year_flag=#{yearFlag}")
+    List<Map<String, Object>> queryUserMedicalExaminationReport(@Param("identityCard") String identityCard,@Param("yearFlag") String yearFlag);
 
 
 }

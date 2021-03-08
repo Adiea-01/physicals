@@ -1,6 +1,7 @@
 package cn.rails.physicals.interceptor;
 
 import cn.rails.physicals.constant.MarsConst;
+import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.model.LoginModel;
@@ -34,36 +35,36 @@ public class Interceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        Object obj=request.getSession().getAttribute("userInfo");
-//        if(obj!=null){
-//            UserInfo userInfo=(UserInfo) obj;
-//            if(userInfo!=null){
-//                return true;
-//            }
-//        }else {
-//            response.sendRedirect(url(request)+"/user/login");
-//        }
-//        return true;
-        if (log.isDebugEnabled()) {
-            log.debug("request url:{}", request.getRequestURI());
-        }
-        String authValue = CookieUtil.getCookieValue(request, MarsConst.AUTH_KEY, false);
-        if (!StringUtils.isEmpty(authValue)) {
-            LoginModel model = userLoginService.getLogin();
-            if (model == null) {
-                throw new MarsException(RespCode.SIGNATURE_MISMATCH);
+        Object obj=request.getSession().getAttribute("userInfo");
+        if(obj!=null){
+            UserInfo userInfo=(UserInfo) obj;
+            if(userInfo!=null){
+                return true;
             }
-
-            return true;
-        }
-        String header = request.getHeader("X-Requested-With");
-        if ("XMLHttpRequest".equals(header)) {
-            response.setHeader("REQUIRE_AUTH", "true");
-            return false;
-        } else {
-            response.sendRedirect(url(request) + "/user/login");
+        }else {
+            response.sendRedirect(url(request)+"/user/login");
         }
         return true;
+//        if (log.isDebugEnabled()) {
+//            log.debug("request url:{}", request.getRequestURI());
+//        }
+//        String authValue = CookieUtil.getCookieValue(request, MarsConst.AUTH_KEY, false);
+//        if (!StringUtils.isEmpty(authValue)) {
+//            LoginModel model = userLoginService.getLogin();
+//            if (model == null) {
+//                throw new MarsException(RespCode.SIGNATURE_MISMATCH);
+//            }
+//
+//            return true;
+//        }
+//        String header = request.getHeader("X-Requested-With");
+//        if ("XMLHttpRequest".equals(header)) {
+//            response.setHeader("REQUIRE_AUTH", "true");
+//            return false;
+//        } else {
+//            response.sendRedirect(url(request) + "/user/login");
+//        }
+//        return true;
     }
 
     public String url(HttpServletRequest request) {
