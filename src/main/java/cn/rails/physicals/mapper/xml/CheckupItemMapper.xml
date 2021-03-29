@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.rails.physicals.mapper.CheckupItemMapper">
+
+
+    <select id="queryAll" parameterType="String" resultType="cn.rails.physicals.entity.CheckupItem">
+        SELECT
+            id,
+            chinese_name,
+            field_name,
+            abbreviation,
+            chinese_explain,
+            classification,
+            miximum,
+            maximum,
+            unit,
+            reference_description,
+            create_date,
+            del_flag
+        FROM
+            physical_checkup_item
+        WHERE
+        1 = 1
+        <if test="chineseName!=null and chineseName!=''">
+            AND chinese_name LIKE concat('%',#{chineseName},'%')
+        </if>
+    </select>
+
+
+
+
+
+</mapper>

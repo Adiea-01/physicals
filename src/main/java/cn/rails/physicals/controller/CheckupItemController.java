@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Description: 体检检查项目
  * @Author: pan zhenghui
@@ -38,8 +40,9 @@ public class CheckupItemController {
     @PostMapping(value = "/queryCheckupItemAll")
     @ResponseBody
     public RespVo queryCheckupItemAll(@RequestParam(defaultValue = "0") Integer start,
-                                      @RequestParam(defaultValue = "20") Integer length) {
-        return RespVo.success(checkupItemService.queryAll(start, length));
+                                      @RequestParam(defaultValue = "20") Integer length,
+                                      HttpServletRequest request) {
+        return RespVo.success(checkupItemService.queryAll(start, length,request));
     }
 
     /**

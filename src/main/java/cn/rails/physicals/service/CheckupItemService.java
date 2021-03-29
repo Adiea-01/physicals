@@ -4,6 +4,8 @@ import cn.rails.physicals.entity.CheckupItem;
 import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.vo.PageDataVo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface CheckupItemService {
 
     /**
@@ -12,8 +14,7 @@ public interface CheckupItemService {
      * @author: pan zhenghui
      * @time: 2021/2/19 9:44
      */
-    PageDataVo<CheckupItem> queryAll(Integer start, Integer length);
-
+    PageDataVo<CheckupItem> queryAll(Integer start, Integer length, HttpServletRequest request);
 
     int addCheckupItem(CheckupItem checkupItem);
 

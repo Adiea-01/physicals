@@ -16,13 +16,10 @@ public interface UserMapper extends BaseMapper<UserInfo> {
     @Update("UPDATE SYSTEM_USER_INFO SET last_login_time=#{lastLoginTime} WHERE id=#{id}")
     int updateLastLoginTime(@Param("id") Long id, @Param("lastLoginTime") Date timestamp);
 
-    @Select("SELECT id,real_name,identity_card,job_number,phone,gender,department,last_login_time,del_flag FROM system_user_info")
-    List<UserInfo> queryAll();
+    List<UserInfo> queryAll(@Param("realName") String realName);
 
     @Select("SELECT id,real_name,identity_card,job_number,phone,gender,department,sub_department FROM system_user_info WHERE identity_card=#{identityCard}")
     UserInfo queryByIdentityCard(@Param("identityCard")String identityCard);
-
-    List<UserInfo> searchUserInfoList(UserInfo userInfo);
 
     @Update("UPDATE system_user_info SET del_flag=#{delFlag} WHERE id=#{id}")
     int updateUserInfoDelFlag(@Param("id")Long id, @Param("delFlag")int delFlag);

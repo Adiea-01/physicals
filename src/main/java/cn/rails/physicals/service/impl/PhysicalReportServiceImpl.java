@@ -1,7 +1,6 @@
 package cn.rails.physicals.service.impl;
 
 import cn.rails.physicals.entity.UserInfo;
-import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.mapper.PhysicalReportMapper;
 import cn.rails.physicals.mapper.PhysicalViewReportRecordMapper;
@@ -48,7 +47,8 @@ public class PhysicalReportServiceImpl implements PhysicalReportService {
     private PhysicalViewReportRecordMapper physicalViewReportRecordMapper;
 
     @Override
-    public PageDataVo<Map<String, Object>> queryViewReportAll(Integer start, Integer length) {
+    public PageDataVo<Map<String, Object>> queryViewReportAll(Integer start, Integer length, HttpServletRequest request) {
+        String year = request.getParameter("year");//后期改成下拉框选择年份的，暂时不用
         Page page = PageHelper.startPage((start / length) + 1, length);
         List<Map<String, Object>> mapList = physicalViewReportRecordMapper.queryViewReportAll();
         PageDataVo<Map<String, Object>> pageData = new PageDataVo<>();

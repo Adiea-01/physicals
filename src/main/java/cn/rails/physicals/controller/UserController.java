@@ -4,7 +4,6 @@ import cn.rails.physicals.entity.UserInfo;
 import cn.rails.physicals.enums.RespCode;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.service.UserService;
-import cn.rails.physicals.util.CookieUtil;
 import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,6 @@ public class UserController {
 
     /**
      * 体检用户列表
-     *
      * @param start
      * @param length
      * @return
@@ -74,8 +72,9 @@ public class UserController {
     @PostMapping(value = "/queryUserAll")
     @ResponseBody
     public RespVo queryUserAll(@RequestParam(defaultValue = "0") Integer start,
-                               @RequestParam(defaultValue = "20") Integer length) {
-        return RespVo.success(userService.queryAll(start, length));
+                               @RequestParam(defaultValue = "20") Integer length,
+                               HttpServletRequest request) {
+        return RespVo.success(userService.queryAll(start, length, request));
     }
 
 
@@ -152,19 +151,5 @@ public class UserController {
     }
 
 
-
-    /**
-     * 模糊搜索
-     * @param start
-     * @param length
-     * @param userInfo
-     * @return
-     */
-    @PostMapping(value = "/searchUserInfoByRealName")
-    @ResponseBody
-    public RespVo searchUserInfoByRealName(@RequestParam(defaultValue = "0") Integer start,
-                                           @RequestParam(defaultValue = "20") Integer length, @RequestBody UserInfo userInfo) {
-        return RespVo.success(userService.searchUserInfoList(start, length, userInfo));
-    }
 
 }

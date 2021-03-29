@@ -75,9 +75,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageDataVo<UserInfo> queryAll(Integer start, Integer length) {
+    public PageDataVo<UserInfo> queryAll(Integer start, Integer length ,HttpServletRequest request) {
+        String realName=request.getParameter("realName");
         Page page = PageHelper.startPage((start / length) + 1, length);
-        List<UserInfo> userInfoList = userMapper.queryAll();
+        List<UserInfo> userInfoList = userMapper.queryAll(realName);
 //        userMapper.selectList(null);
         PageDataVo<UserInfo> pageData = new PageDataVo<>();
         pageData.setData(userInfoList);
@@ -193,15 +194,5 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public PageDataVo<UserInfo> searchUserInfoList(Integer start, Integer length, UserInfo userInfo) {
-        Page page = PageHelper.startPage((start / length) + 1, length);
-        List<UserInfo> userInfoList = userMapper.searchUserInfoList(userInfo);
-        PageDataVo<UserInfo> pageData = new PageDataVo<>();
-        pageData.setData(userInfoList);
-        pageData.setITotal(page.getTotal());
-        pageData.setITotalDisplayRecords(page.getTotal());
-        pageData.setFnRecordsTotal(page.getTotal());
-        return pageData;
-    }
+
 }

@@ -90,10 +90,10 @@ function loadData() {
                 },
                 {
                     targets: 5, render: function (data, type, full, meta) {
-                        if (full.view == 0) {
-                            return '<a class="btn btn-warning btn-circle""> <i class="glyphicon glyphicon-open-file"></i>未查看</a>';
+                        if (full.view) {
+                            return '<a class="btn btn-success btn-sm"><i class="glyphicon glyphicon-comment"></i>已查看</a>';
                         } else {
-                            return '<a class="btn btn-success btn-"><i class="glyphicon glyphicon-comment"></i>已查看</a>';
+                            return '<a class="btn btn-warning btn-sm""> <i class="glyphicon glyphicon-open-file"></i>未查看</a>';
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -36,9 +37,10 @@ public class CheckupItemServiceImpl implements CheckupItemService {
      * @time: 2021/2/19 9:45
      */
     @Override
-    public PageDataVo<CheckupItem> queryAll(Integer start, Integer length) {
+    public PageDataVo<CheckupItem> queryAll(Integer start, Integer length, HttpServletRequest request) {
+        String itemName=request.getParameter("itemName");
         Page page = PageHelper.startPage((start / length) + 1, length);
-        List<CheckupItem> checkupItemList = checkupItemMapper.queryAll();
+        List<CheckupItem> checkupItemList = checkupItemMapper.queryAll(itemName);
         PageDataVo<CheckupItem> pageData = new PageDataVo<>();
         pageData.setData(checkupItemList);
         pageData.setITotal(page.getTotal());

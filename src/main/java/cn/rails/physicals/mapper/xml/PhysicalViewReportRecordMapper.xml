@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.rails.physicals.mapper.PhysicalViewReportRecordMapper">
+
+
+    <select id="queryViewReportAll" resultType="java.util.Map">
+        SELECT
+            pvrr.id AS id,
+            ui.real_name AS realName,
+            ui.identity_card AS identityCard,
+            ui.job_number AS jobNumber,
+            ui.department AS department,
+            ui.gender AS gender,
+            pvrr.`view`
+        FROM
+            system_user_info ui
+            LEFT JOIN physical_report pr ON ui.identity_card = pr.identity_card
+            RIGHT JOIN physical_view_report_record pvrr ON pr.id = pvrr.report_id
+            LEFT JOIN physical_annual_management pam ON pam.year_uuid = pr.year_flag
+        WHERE
+            pam.year_flag = '1'
+    </select>
+
+
+
+
+
+</mapper>

@@ -8,7 +8,10 @@ import cn.rails.physicals.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +59,7 @@ public class ReportController {
      */
     @PostMapping(value = "/uploadExcel")
     @ResponseBody
-    private RespVo importExcel(@RequestParam(value = "excelFile", required = false) MultipartFile multipartFile) throws IOException {
+    public RespVo importExcel(@RequestParam(value = "excelFile", required = false) MultipartFile multipartFile) throws IOException {
 
         if (multipartFile == null) {
             throw new MarsException("请先选择要导入的excel文件");
@@ -77,8 +80,9 @@ public class ReportController {
     @PostMapping(value = "/queryViewReportAll")
     @ResponseBody
     public RespVo queryViewReportAll(@RequestParam(defaultValue = "0") Integer start,
-                                      @RequestParam(defaultValue = "20") Integer length) {
-        return RespVo.success(physicalReportService.queryViewReportAll(start, length));
+                                     @RequestParam(defaultValue = "20") Integer length,
+                                     HttpServletRequest request) {
+        return RespVo.success(physicalReportService.queryViewReportAll(start, length, request));
     }
 
     /**

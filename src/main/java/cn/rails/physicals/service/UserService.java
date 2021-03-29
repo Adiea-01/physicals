@@ -11,7 +11,7 @@ public interface UserService {
 
     RespVo login(String username, String password, HttpServletRequest request, HttpServletResponse response);
 
-    PageDataVo<UserInfo> queryAll(Integer start,Integer length);
+    PageDataVo<UserInfo> queryAll(Integer start,Integer length,HttpServletRequest request);
 
     int addUserInfo(UserInfo userInfo);
 
@@ -24,7 +24,5 @@ public interface UserService {
     int resetPassword(Long id);
 
     void resetPasswordAll();
-
-    PageDataVo<UserInfo> searchUserInfoList(Integer start,Integer length,UserInfo userInfo);
 
 }

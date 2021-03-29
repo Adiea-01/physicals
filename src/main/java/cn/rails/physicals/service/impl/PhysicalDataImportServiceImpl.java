@@ -4,7 +4,6 @@ import cn.rails.physicals.entity.*;
 import cn.rails.physicals.exception.MarsException;
 import cn.rails.physicals.mapper.*;
 import cn.rails.physicals.service.PhysicalDataImportService;
-import cn.rails.physicals.util.RandomUtils;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -12,14 +11,12 @@ import jxl.read.biff.BiffException;
 import jxl.read.biff.WorkbookParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -91,12 +88,10 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
 //        }
 
 
-
-
         Workbook workbook = null;
         InputStream inputStream = multipartFile.getInputStream();
         try {
-             workbook = WorkbookParser.getWorkbook(inputStream);
+            workbook = WorkbookParser.getWorkbook(inputStream);
             Sheet sheet = workbook.getSheet(0);
             //读取excel表中的数据写入到数据库
             int rowsCount = sheet.getRows();//总行数
@@ -218,10 +213,10 @@ public class PhysicalDataImportServiceImpl implements PhysicalDataImportService 
 //            log.error("file save",e);
 //            throw new MarsException("导入数据时，发生异常");
         } catch (BiffException bi) {
-            log.error("file read",bi);
+            log.error("file read", bi);
             throw new MarsException("读取文件错误");
         } catch (ParseException parse) {
-            log.error("date",parse);
+            log.error("date", parse);
             throw new MarsException("日期转换失败");
         } finally {
             //关闭连接，释放资源

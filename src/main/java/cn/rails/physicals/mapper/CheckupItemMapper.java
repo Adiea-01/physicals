@@ -12,8 +12,8 @@ import java.util.List;
 @Mapper
 public interface CheckupItemMapper extends BaseMapper<CheckupItem> {
 
-    @Select("SELECT id,chinese_name,field_name,abbreviation,chinese_explain,classification,miximum,maximum,unit,reference_description,create_date,del_flag FROM physical_checkup_item")
-    List<CheckupItem> queryAll();
+//    @Select("SELECT id,chinese_name,field_name,abbreviation,chinese_explain,classification,miximum,maximum,unit,reference_description,create_date,del_flag FROM physical_checkup_item")
+    List<CheckupItem> queryAll(@Param("chineseName")String chineseName);
 
     @Select("SELECT id,chinese_name,field_name,abbreviation,chinese_explain,classification,miximum,maximum,unit,reference_description,create_date,del_flag FROM physical_checkup_item WHERE chinese_name=#{chineseName}")
     CheckupItem querybyChineseName(@Param("chineseName") String chineseName);

@@ -134,12 +134,23 @@ $("#superAdmin").on("change",function () {
 $(document).ready(function () {
     loadData();
 });
+
+//模糊搜索
+function loadDataLikeItem(){
+    var itemName=$("#itemName").val();
+    if (itemName==null || itemName==''){
+        alert("体检项目名称");
+        return false;
+    }
+    loadData(itemName);
+}
+
 function add() {
     manager.loadRole("addRoleId");
     $("#checkupItemAddModal").modal("show");
 }
 
-function loadData() {
+function loadData(itemName) {
 
     $('#dataTables-checkupItem').dataTable().fnDestroy();
    var table = $('#dataTables-checkupItem').on('xhr.dt', function (e, settings, json, xhr) {
@@ -156,7 +167,7 @@ function loadData() {
                 url: "./checkupItem/queryCheckupItemAll",
                 type: "post",
                 dataType: "json",
-                data: {}
+                data: {'itemName':itemName}
                 , dataSrc: function (result) {
                     if (result.code != 0) {
                         alert(result.msg);
