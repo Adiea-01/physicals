@@ -232,7 +232,7 @@ function loadData() {
                 {
                     targets: 5, render: function (data, type, full, meta) {
                         if(full.yearFlag==0){
-                            return '<a class="btn btn-success btn-sm" onclick="setDefaultYear(\'' + full.id + '\')"><i class="glyphicon glyphicon-pencil"></i>设为默认</a>';
+                            return '<a class="btn btn-primary btn-sm" onclick="setDefaultYear(\'' + full.id + '\')"><i class="glyphicon glyphicon-star-empty"></i>设为默认</a>';
                         }else {
                             return '<a class="btn btn-default btn-sm" disabled="disabled">默认</a>';
                         }
